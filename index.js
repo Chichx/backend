@@ -1,7 +1,10 @@
+const fs = require('fs');
+
 class ProductManager{
     constructor() {
         this.products = [];
         this.id = 1
+        this.path = "products.json"
     }
 
     getProducts() {
@@ -14,9 +17,13 @@ class ProductManager{
         }
 
         if(!this.products.some((product) => product.code === code)) {
-          const nuevoProducto = { id: this.id++, title, description, price, thumbnail, code, stock }
+          const nuevaId = this.id++;
+          const nuevoProducto = { id: nuevaId, title, description, price, thumbnail, code, stock }
 
-          this.products.push(nuevoProducto)
+          this.products.push(nuevoProducto);
+          this.saveProduct(this.products);
+      
+          return nuevoProducto;
         } else {
           console.log(`Ya existe el codigo de este producto el codigo que se repite es ${code}`)
         }
@@ -29,6 +36,53 @@ class ProductManager{
         }
         return existeLaId
     }
+
+    saveProduct(products) {
+      fs.writeFileSync(this.path, JSON.stringify(products, null, 2), {encoding: 'utf-8'});
+    }
+
+    getProductsFromFile() {
+      try {
+        const fileData = fs.readFileSync(this.path, { encoding: 'utf-8' });
+        return JSON.parse(fileData);
+      } catch (error) {
+        console.log(`Error al leer el archivo: ${error}`)
+        return [];
+      }
+    }
+
+    updateProduct(id, updatedFields) {
+      let products = this.getProductsFromFile();
+      const productIndex = products.findIndex((product) => product.id === id);
+    
+      if (productIndex === -1) {
+        console.log('Producto no encontrado');
+        return;
+      }
+
+      if ('id' in updatedFields) {
+        console.log('No se puede cambiar la ID del producto.');
+        return;
+      }
+    
+      products[productIndex] = { ...products[productIndex], ...updatedFields };
+      this.saveProduct(products);
+    
+      return products[productIndex];
+    }
+    
+    deleteProduct(id) {
+      let products = this.getProductsFromFile();
+      const length = products.length;
+  
+      products = products.filter((product) => product.id !== id);
+  
+      if (products.length === length) {
+        console.log('Producto no encontrado');
+      }
+  
+      this.saveProduct(products);
+    }
 }
 
 const product = new ProductManager();
@@ -40,16 +94,16 @@ try {
     price: 100,
     thumbnail: 'imagen1.jpg',
     code: 'ABC123',
-    stock: 20
+    stock: 20,
   });
 
   product.addProduct({
     title: 'Producto 2',
     description: 'Descripción del producto 2',
-    price: 150,
+    price: 300,
     thumbnail: 'imagen2.jpg',
-    code: 'DEF456',
-    stock: 15
+    code: 'DFG456',
+    stock: 20,
   });
 
   product.addProduct({
@@ -57,40 +111,30 @@ try {
     description: 'Descripción del producto 3',
     price: 200,
     thumbnail: 'imagen3.jpg',
-    code: 'GHI789',
-    stock: 10
+    code: 'HIJ789',
+    stock: 20,
   });
 
-  // Este addProduct va dar error ya que el code es el mismo que el producto 3
-  product.addProduct({ 
-    title: 'Producto 4',
-    description: 'Descripción del producto 4',
-    price: 200,
-    thumbnail: 'imagen3.jpg',
-    code: 'GHI789',
-    stock: 10
-  });
-
-// Este addProduct va dar error ya que le falta el campo de stock
   product.addProduct({
-    title: 'Producto 5',
-    description: 'Descripción del producto 5',
-    price: 200,
-    thumbnail: 'imagen3.jpg',
-    code: 'JKL789',
+  title: 'Producto 4',
+  description: 'Descripción del producto 4',
+  price: 200,
+  thumbnail: 'imagen4.jpg',
+  code: 'KLM123',
+  stock: 10,
   });
+  
 
+  console.log('Productos:', product.getProducts());
   console.log("--------------------------")
-  console.log("Todos los productos")
-  console.log(product.getProducts());
+  console.log('Producto con ID 2:', product.getProductById(2));
+  console.log("--------------------------")
 
+  console.log('Se edito el precio del producto con ID 2:', product.updateProduct(2, { price: 200 }));
   console.log("--------------------------")
-  console.log("Solo el que tiene la id 2")
-  console.log(product.getProductById(2)); 
 
-  console.log("--------------------------")
-  console.log("Error ya que no existe el 5")
-  console.log(product.getProductById(5));
+  console.log('Se elimino el producto con ID 3')
+  product.deleteProduct(3)
 } catch (error) {
   console.error(error.message);
 }
