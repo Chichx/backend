@@ -4,7 +4,7 @@ class ProductManager{
     constructor() {
         this.products = [];
         this.id = 1
-        this.path = "products.json"
+        this.path = "../json/products.json"
     }
 
     getProducts() {
@@ -116,25 +116,82 @@ try {
   });
 
   product.addProduct({
-  title: 'Producto 4',
-  description: 'Descripción del producto 4',
-  price: 200,
-  thumbnail: 'imagen4.jpg',
-  code: 'KLM123',
-  stock: 10,
+    title: 'Producto 4',
+    description: 'Descripción del producto 4',
+    price: 200,
+    thumbnail: 'imagen4.jpg',
+    code: 'KLM123',
+    stock: 10,
   });
+
+  product.addProduct({
+    title: 'Producto 5',
+    description: 'Descripción del producto 5',
+    price: 150,
+    thumbnail: 'imagen5.jpg',
+    code: 'XYZ456',
+    stock: 15,
+  });
+
+  product.addProduct({
+    title: 'Producto 6',
+    description: 'Descripción del producto 6',
+    price: 250,
+    thumbnail: 'imagen6.jpg',
+    code: 'PQR789',
+    stock: 8,
+  });
+
+  product.addProduct({
+    title: 'Producto 7',
+    description: 'Descripción del producto 7',
+    price: 180,
+    thumbnail: 'imagen7.jpg',
+    code: 'UVW123',
+    stock: 20,
+  });
+
+  product.addProduct({
+    title: 'Producto 8',
+    description: 'Descripción del producto 8',
+    price: 300,
+    thumbnail: 'imagen8.jpg',
+    code: 'STU456',
+    stock: 12,
+  });
+
+  product.addProduct({
+    title: 'Producto 9',
+    description: 'Descripción del producto 9',
+    price: 120,
+    thumbnail: 'imagen9.jpg',
+    code: 'EFG789',
+    stock: 25,
+  });
+
+  product.addProduct({
+    title: 'Producto 10',
+    description: 'Descripción del producto 10',
+    price: 270,
+    thumbnail: 'imagen10.jpg',
+    code: 'MNO123',
+    stock: 18,
+  });
+
   
 
-  console.log('Productos:', product.getProducts());
-  console.log("--------------------------")
-  console.log('Producto con ID 2:', product.getProductById(2));
-  console.log("--------------------------")
+  // console.log('Productos:', product.getProducts());
+  // console.log("--------------------------")
+  // console.log('Producto con ID 2:', product.getProductById(2));
+  // console.log("--------------------------")
 
-  console.log('Se edito el precio del producto con ID 2:', product.updateProduct(2, { price: 200 }));
-  console.log("--------------------------")
+  // console.log('Se edito el precio del producto con ID 2:', product.updateProduct(2, { price: 200 }));
+  // console.log("--------------------------")
 
-  console.log('Se elimino el producto con ID 3')
-  product.deleteProduct(3)
+  // console.log('Se elimino el producto con ID 3')
+  // product.deleteProduct(3)
 } catch (error) {
   console.error(error.message);
 }
+
+module.exports = ProductManager
