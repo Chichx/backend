@@ -1,92 +1,122 @@
 [
   {
-    "id": 1,
+    "id": "2b3f7efb32ed4b2be799dfa054ab6a6c",
     "title": "Producto 1",
     "description": "Descripción del producto 1",
     "price": 100,
-    "thumbnail": "imagen1.jpg",
     "code": "ABC123",
-    "stock": 20
+    "status": true,
+    "stock": 20,
+    "category": "Category 1",
+    "thumbnails": []
   },
   {
-    "id": 2,
+    "id": "9c9690a0fed8927dd38d0cb154a4a5cf",
     "title": "Producto 2",
     "description": "Descripción del producto 2",
-    "price": 300,
-    "thumbnail": "imagen2.jpg",
-    "code": "DFG456",
-    "stock": 20
+    "price": 150,
+    "code": "DEF456",
+    "status": true,
+    "stock": 15,
+    "category": "Category 2",
+    "thumbnails": []
   },
   {
-    "id": 3,
+    "id": "5699dc6b078a56a7f95d35de26c65d7c",
     "title": "Producto 3",
     "description": "Descripción del producto 3",
-    "price": 200,
-    "thumbnail": "imagen3.jpg",
-    "code": "HIJ789",
-    "stock": 20
+    "price": 120,
+    "code": "GHI789",
+    "status": true,
+    "stock": 10,
+    "category": "Category 1",
+    "thumbnails": []
   },
   {
-    "id": 4,
+    "id": "020ff27d534c2102a9cda4aae613b9f9",
     "title": "Producto 4",
     "description": "Descripción del producto 4",
-    "price": 200,
-    "thumbnail": "imagen4.jpg",
-    "code": "KLM123",
-    "stock": 10
+    "price": 180,
+    "code": "JKL012",
+    "status": true,
+    "stock": 18,
+    "category": "Category 3",
+    "thumbnails": []
   },
   {
-    "id": 5,
+    "id": "d24610e4f14144aeaf4a56cfbf62f807",
     "title": "Producto 5",
     "description": "Descripción del producto 5",
-    "price": 150,
-    "thumbnail": "imagen5.jpg",
-    "code": "XYZ456",
-    "stock": 15
+    "price": 90,
+    "code": "MNO345",
+    "status": true,
+    "stock": 22,
+    "category": "Category 2",
+    "thumbnails": []
   },
   {
-    "id": 6,
+    "id": "201b085a2c1ded65b05b9c00c83cb054",
     "title": "Producto 6",
     "description": "Descripción del producto 6",
-    "price": 250,
-    "thumbnail": "imagen6.jpg",
-    "code": "PQR789",
-    "stock": 8
+    "price": 200,
+    "code": "PQR678",
+    "status": true,
+    "stock": 12,
+    "category": "Category 1",
+    "thumbnails": []
   },
   {
-    "id": 7,
+    "id": "f1628e5b53595a4f852e4a746db83a00",
     "title": "Producto 7",
     "description": "Descripción del producto 7",
-    "price": 180,
-    "thumbnail": "imagen7.jpg",
-    "code": "UVW123",
-    "stock": 20
+    "price": 130,
+    "code": "STU901",
+    "status": true,
+    "stock": 25,
+    "category": "Category 3",
+    "thumbnails": []
   },
   {
-    "id": 8,
+    "id": "8fcbd03ac9ee99e07360f7ced4952a95",
     "title": "Producto 8",
     "description": "Descripción del producto 8",
-    "price": 300,
-    "thumbnail": "imagen8.jpg",
-    "code": "STU456",
-    "stock": 12
+    "price": 160,
+    "code": "VWX234",
+    "status": true,
+    "stock": 14,
+    "category": "Category 2",
+    "thumbnails": []
   },
   {
-    "id": 9,
+    "id": "49bc12415b24759043ba80ade83cd8be",
     "title": "Producto 9",
     "description": "Descripción del producto 9",
-    "price": 120,
-    "thumbnail": "imagen9.jpg",
-    "code": "EFG789",
-    "stock": 25
+    "price": 110,
+    "code": "YZA567",
+    "status": true,
+    "stock": 30,
+    "category": "Category 1",
+    "thumbnails": []
   },
   {
-    "id": 10,
+    "id": "712220a5c1856eb05eb1db59af5a6397",
     "title": "Producto 10",
     "description": "Descripción del producto 10",
-    "price": 270,
-    "thumbnail": "imagen10.jpg",
-    "code": "MNO123",
-    "stock": 18
+    "price": 200,
+    "code": "XYZ789",
+    "status": true,
+    "stock": 25,
+    "category": "Category 3",
+    "thumbnails": []
+  },
+  {
+    "id": "efc387f41931c40b84fa0b2332eb30ce",
+    "title": "Producto 13",
+    "description": "Descripción del producto 13",
+    "price": 280,
+    "code": "MNO1254",
+    "stock": 50,
+    "thumbnails": [],
+    "thumbnail": "imagen13.jpg"
   }
 ]
