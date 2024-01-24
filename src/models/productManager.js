@@ -31,12 +31,12 @@ class ProductManager{
         }
     }
 
-    addProduct({title, description, price, code, status, stock, category, thumbnails}) {
+    addProduct({title, description, price, code, status, stock, category, thumbnail}) {
       let products = this.getProducts();
 
         if(!products.some((product) => product.code === code)) {
           const nuevaId = crypto.randomBytes(16).toString('hex');
-          const nuevoProducto = { id: nuevaId, title, description, price, code, status, stock, category, thumbnails: thumbnails || [] }
+          const nuevoProducto = { id: nuevaId, title, description, price, code, status, stock, category, thumbnail: thumbnail }
 
           products.push(nuevoProducto);
           this.saveProduct(products);
@@ -89,7 +89,7 @@ try {
     status: true,
     stock: 20,
     category: 'Category 1',
-    thumbnail: 'imagen1.jpg',
+    thumbnail: 'https://www.pngarts.com/files/8/Apple-iPhone-11-Download-PNG-Image.png',
   });
 
   product.addProduct({
@@ -100,7 +100,7 @@ try {
     status: true,
     stock: 15,
     category: 'Category 2',
-    thumbnail: 'imagen2.jpg',
+    thumbnail: 'https://imgur.com/Fn9kZve.png',
   });
 
   product.addProduct({
@@ -111,7 +111,7 @@ try {
     status: true,
     stock: 10,
     category: 'Category 1',
-    thumbnail: 'imagen3.jpg',
+    thumbnail: 'https://imgur.com/u6wclcF.png',
   });
 
   product.addProduct({
@@ -122,7 +122,7 @@ try {
     status: true,
     stock: 18,
     category: 'Category 3',
-    thumbnail: 'imagen4.jpg',
+    thumbnail: 'https://imgur.com/csvQT5F.png',
   });
 
   product.addProduct({
@@ -133,7 +133,7 @@ try {
     status: true,
     stock: 22,
     category: 'Category 2',
-    thumbnail: 'imagen5.jpg',
+    thumbnail: 'https://imgur.com/DrC8wiB.png',
   });
 
   product.addProduct({
@@ -144,63 +144,9 @@ try {
     status: true,
     stock: 12,
     category: 'Category 1',
-    thumbnail: 'imagen6.jpg',
+    thumbnail: 'https://imgur.com/Ms0uVyZ.png',
   });
 
-  product.addProduct({
-    title: 'Producto 7',
-    description: 'Descripción del producto 7',
-    price: 130,
-    code: 'STU901',
-    status: true,
-    stock: 25,
-    category: 'Category 3',
-    thumbnail: 'imagen7.jpg',
-  });
-
-  product.addProduct({
-    title: 'Producto 8',
-    description: 'Descripción del producto 8',
-    price: 160,
-    code: 'VWX234',
-    status: true,
-    stock: 14,
-    category: 'Category 2',
-    thumbnail: 'imagen8.jpg',
-  });
-
-  product.addProduct({
-    title: 'Producto 9',
-    description: 'Descripción del producto 9',
-    price: 110,
-    code: 'YZA567',
-    status: true,
-    stock: 30,
-    category: 'Category 1',
-    thumbnail: 'imagen9.jpg',
-  });
-
-  product.addProduct({
-    title: 'Producto 10',
-    description: 'Descripción del producto 10',
-    price: 200,
-    code: 'XYZ789',
-    status: true,
-    stock: 25,
-    category: 'Category 3',
-    thumbnail: 'imagen10.jpg',
-  });
-  
-  // console.log('Productos:', product.getProducts());
-  // console.log("--------------------------")
-  // console.log('Producto con ID 2:', product.getProductById(2));
-  // console.log("--------------------------")
-
-  // console.log('Se edito el precio del producto con ID 2:', product.updateProduct(2, { price: 200 }));
-  // console.log("--------------------------")
-
-  // console.log('Se elimino el producto con ID 3')
-  // product.deleteProduct(3)
 } catch (error) {
   console.error(error.message);
 }

@@ -1,76 +1,42 @@
 const { Router } = require("express")
-const fs = require("fs");
-const crypto = require("crypto")
+const CartManager = require("../models/cartManager")
 
-function idRandom() {
-  return crypto.randomBytes(8).toString('hex');
-}
+const cartManager = new CartManager()
 
 const routerCart = Router()
 
 routerCart.post('/', async (req, res) => {
-    const cartId = idRandom()
-    const newCart = ({
-        id: cartId,
-        products: []
-    })
+    const cart = cartManager.addCart();
 
-    const carts = JSON.parse(fs.readFileSync("../json/carrito.json", { encoding: 'utf-8' }));
-    carts.push(newCart);
-    fs.writeFileSync("../json/carrito.json", JSON.stringify(carts, null, 2), {encoding: 'utf-8'});
-
-    res.json(newCart);
+    if (cart) {
+        res.status(201).json({ data: cart.cart })
+    } else {
+        res.status(500).json({ message: "Error al agregar el carrito" })
+    }
 })
 
 routerCart.get('/:cid', async (req, res) => {
     const cid = req.params.cid
-    const carts = JSON.parse(fs.readFileSync("../json/carrito.json", { encoding: 'utf-8' }));
-    const cart = carts.find(cart => cart.id === cid);
+    const cart = cartManager.getCart(cid)
 
     if (cart) {
-        res.json(cart.products);
+        res.status(200).send(cart.cart);
     } else {
-        res.status(404).send("Carrito no encontrado");
+        res.status(404).json({ message: 'Carrito no encontrado'});
     }
 })
 
 routerCart.post('/:cid/product/:pid', async (req, res) => {
-    const cid = req.params.cid
-    const pid = req.params.pid
-    const quantity = 1
+    try {
+        let cid = req.params.cid;
+        let pid = req.params.pid;
 
-    const carts = JSON.parse(fs.readFileSync("../json/carrito.json", { encoding: 'utf-8' }))
+        const result = cartManager.addProductToCart(cid, pid);
 
-    const cart = carts.find(cart => cart.id === cid)
-
-    if (!cart) {
-        res.status(404).send("Carrito no encontrado");
-        return;
+        res.status(200).send(result)
+    } catch (error) {
+        res.status(500).send(error.error || "Error interno del servidor");
     }
-
-    const products = JSON.parse(fs.readFileSync("../json/products.json", { encoding: 'utf-8' }))
-
-    const productExiste = products.find(product => product.id === pid)
-
-    if (!productExiste) {
-        res.status(404).send("Producto no encontrado en la lista de productos");
-        return;
-    }
-
-    const productInCart = cart.products.find(product => product.id === pid)
-
-    if (productInCart) {
-        productInCart.quantity++;
-    } else {
-        cart.products.push({
-            id: pid,
-            quantity: quantity
-        })
-    }
-
-    fs.writeFileSync("../json/carrito.json", JSON.stringify(carts, null, 2), {encoding: 'utf-8'});
-
-    res.json(cart)
 })
   
 

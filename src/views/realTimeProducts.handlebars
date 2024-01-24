@@ -1,0 +1,127 @@
+<div class="mt-24 relative">
+    <div
+        class="absolute top-96 right-0 w-48 h-48 blur-[180px] bg-gradient-to-r from-blue-300 to-blue-500 rounded-3xl z-[-1]">
+    </div>
+    <div
+        class="absolute bottom-0 left-0 w-48 h-48 blur-[200px] bg-gradient-to-r from-blue-300 to-blue-500 rounded-3xl z-[-1]">
+    </div>
+
+
+    <div class="my-6 flex justify-center items-center">
+        <div class="p-6 min-w-0 bg-[#232323] rounded-xl">
+            <div class="flex items-center mb-4 gap-3">
+                <div>
+                    <div
+                        class="w-12 h-12 flex group items-center transition-all justify-center rounded-xl text-gray-900 group-hover:text-white bg-[#272727] text-white transition-all duration-200">
+                        <div class="flex items-center justify-center relative w-8 h-8 undefined">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="flex items-center gap-1">
+                        <div class="flex items-center justify-center bg-input rounded-full text-lg bg-transparent">
+                        </div>
+                        <h3 class="min-w-min text-white font-semibold text-lg line-clamp-1">
+                            Agregar un nuevo producto
+                        </h3>
+                    </div>
+                    <h4 class="text-gray-400 text-sm">
+                        Completa los forms
+                    </h4>
+                </div>
+            </div>
+
+            <div class="w-full h-[1px] bg-gray-500 mb-6"></div>
+
+            <form id="newProductForm">
+                <div class="max-w-md mx-auto">
+                    <div class="grid md:grid-cols-2 md:gap-6">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="text" id="title" name="title"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                required />
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Titulo
+                            </label>
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="text" id="description" name="description"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                required />
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Descripcion
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 md:gap-6">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="number" id="price" name="price"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                required />
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Price
+                            </label>
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="text" id="code" name="code"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                required />
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Codigo
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 md:gap-6">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="number" id="stock" name="stock"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                required />
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Stock
+                            </label>
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="text" id="category" name="category"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                required />
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Categoria
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input type="text" id="thumbnail" name="thumbnail"
+                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                            Thumbnail
+                        </label>
+                    </div>
+                    <button type="submit"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-full md:w-full lg:w-full xl:w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Agregar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="my-12 flex justify-center items-center">
+        <div class="flex  grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3">
+
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
