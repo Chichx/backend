@@ -8,9 +8,9 @@ class ProductManager{
     async getProducts(limit) {
       try {
         if (limit) {
-          return await ProductModel.find().limit(limit);
+          return await ProductModel.find().limit(limit).lean();
         } else {
-          return await ProductModel.find();
+          return await ProductModel.find().lean();
         }
       } catch (error) {
         console.log(`Error al leer el archivo: ${error}`);
