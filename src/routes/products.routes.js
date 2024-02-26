@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const ProductManager = require("../dao/db/mongo/managers/productManager");
+const { paginate } = require("mongoose-paginate-v2");
 
 const productManager = new ProductManager();
 
@@ -8,8 +9,8 @@ const routerProd = Router();
 
 routerProd.get('/', async (req, res) => {
     try {
-        const { limit } = req.query;
-        const prods = await productManager.getProducts(limit);
+        const { limit = 10, page = 1, sort, query } = req.query;
+        const prods = await productManager.getProducts({ limit, page, sort, query });
         res.status(200).send(prods);
     } catch (error) {
         console.error(error);

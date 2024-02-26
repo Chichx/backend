@@ -1,18 +1,18 @@
 const express = require("express")
 const http = require('http')
-const { Server } = require('socket.io')
-const Database = require('./dao/db/mongo/index')
-
-const ChatModel = require('./dao/db/mongo/models/messages.model')
-
 const handlebars = require('express-handlebars')
+const { Server } = require('socket.io')
+
+const Database = require('./dao/db/mongo/index')
+const ChatModel = require('./dao/db/mongo/models/messages.model')
+const ProductManager = require("./dao/db/mongo/managers/productManager")
+
 const routerProd = require("./routes/products.routes")
 const routerCart = require("./routes/cart.routes")
-const routerHome = require("./routes/home.routes")
+const homeProductsRouter = require("./routes/homeproducts.routes")
 const routerRealTimeProducts = require("./routes/realTimeProducts.routes")
-
-const ProductManager = require("./dao/db/mongo/managers/productManager")
 const chatRouter = require("./routes/chat.routes")
+const cartsRouter = require("./routes/carts.routes")
 
 const productManager = new ProductManager()
 
@@ -35,11 +35,11 @@ app.use(express.urlencoded({ extended: true }))
 //Routes
 app.use('/api/products', routerProd) 
 app.use('/api/carts', routerCart) 
-app.use('/home', routerHome)
+app.use('/products', homeProductsRouter)
+app.use('/carts', cartsRouter)
 app.use('/realtimeproducts', routerRealTimeProducts)
 app.use('/chat', chatRouter)
 
-let msjs =  [] 
 //Socket
 const io = new Server(server)
 io.on('connection', async (socket) =>{

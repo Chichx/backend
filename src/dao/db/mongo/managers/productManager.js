@@ -5,19 +5,40 @@ const crypto = require("crypto")
 class ProductManager{
     constructor() {}
 
-    async getProducts(limit) {
+    async getProducts({ limit, page, sort, query }) {
       try {
-        if (limit) {
-          return await ProductModel.find().limit(limit).lean();
-        } else {
-          return await ProductModel.find().lean();
-        }
+          let mongoQuery = {};
+  
+          if (query === "disponibilidad") {
+            mongoQuery.status = true;
+          } else if (query) {
+            mongoQuery.category = query;
+          }
+  
+          const opciones = {
+              page: page ? parseInt(page, 10) : 1,
+              limit: limit ? parseInt(limit, 10) : 0,
+              sort: sort ? { price: sort === 'asc' ? 1 : sort === 'desc' ? -1 : 0 } : {}
+          };
+  
+          const result = await ProductModel.paginate(mongoQuery, opciones);
+  
+          return {
+            success: true,
+            payload: result.docs,
+            totalPages: result.totalPages,
+            prevPage: result.prevPage,
+            nextPage: result.nextPage,
+            hasPrevPage: result.hasPrevPage,
+            hasNextPage: result.hasNextPage,
+            prevLink: result.hasPrevPage ? `/api/products?page=${result.prevPage}&limit=${limit}&query=${query ? `${query}` : ''}&sort=${sort ? `${sort}` : 'asc'}` : null,
+            nextLink: result.hasNextPage ? `/api/products?page=${result.nextPage}&limit=${limit}&query=${query ? `${query}` : ''}&sort=${sort ? `${sort}` : 'asc'}` : null
+        };
       } catch (error) {
-        console.log(`Error al leer el archivo: ${error}`);
-        return [];
+          console.log(`Error al leer el archivo: ${error}`);
+          return [];
       }
-    }
-    
+  }
 
     async getProductById(id) {
         try {
@@ -89,9 +110,9 @@ try {
   product.addProduct({
     name: 'Producto 1',
     description: 'Descripción del producto 1',
-    price: 100,
+    price: 90,
     code: 'ABC123',
-    status: true,
+    status: false,
     stock: 20,
     category: 'Category 1',
     thumbnail: 'https://www.pngarts.com/files/8/Apple-iPhone-11-Download-PNG-Image.png',
@@ -100,9 +121,9 @@ try {
   product.addProduct({
     name: 'Producto 2',
     description: 'Descripción del producto 2',
-    price: 150,
+    price: 100,
     code: 'DEF456',
-    status: true,
+    status: false,
     stock: 15,
     category: 'Category 2',
     thumbnail: 'https://imgur.com/Fn9kZve.png',
@@ -111,9 +132,9 @@ try {
   product.addProduct({
     name: 'Producto 3',
     description: 'Descripción del producto 3',
-    price: 120,
+    price: 110,
     code: 'GHI789',
-    status: true,
+    status: false,
     stock: 10,
     category: 'Category 1',
     thumbnail: 'https://imgur.com/u6wclcF.png',
@@ -122,7 +143,7 @@ try {
   product.addProduct({
     name: 'Producto 4',
     description: 'Descripción del producto 4',
-    price: 180,
+    price: 120,
     code: 'JKL012',
     status: true,
     stock: 18,
@@ -133,7 +154,7 @@ try {
   product.addProduct({
     name: 'Producto 5',
     description: 'Descripción del producto 5',
-    price: 90,
+    price: 130,
     code: 'MNO345',
     status: true,
     stock: 22,
@@ -144,7 +165,7 @@ try {
   product.addProduct({
     name: 'Producto 6',
     description: 'Descripción del producto 6',
-    price: 200,
+    price: 140,
     code: 'PQR678',
     status: true,
     stock: 12,
