@@ -47,8 +47,8 @@ io.on('connection', async (socket) =>{
 
   socket.on("getProducts", async () => {
     try {
-      const products = await productManager.getProducts();
-      socket.emit("productsData", products);
+      const products = await productManager.getProducts({ limit: 10, page: 1, sort: null, query: null });
+      socket.emit("productsData", products.payload);
     } catch (error) {
       console.error("Error al obtener productos:", error.message);
     }
@@ -57,8 +57,8 @@ io.on('connection', async (socket) =>{
   socket.on("addProduct", async (addProd) => {
     try {
       productManager.addProduct(addProd);
-      const products = await productManager.getProducts();
-      socket.emit("productsData", products);
+      const products = await productManager.getProducts({ limit: 10, page: 1, sort: null, query: null });
+      socket.emit("productsData", products.payload);
     } catch (error) {
       console.error("Error al agregar nuevo producto:", error.message);
     }

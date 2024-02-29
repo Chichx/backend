@@ -115,7 +115,7 @@ async updateCart(cartId, updatedProducts) {
 async updateProductQuantity(cartId, productId, newQuantity) {
   try {
       const result = await CartModel.updateOne(
-          { _id: cartId, 'products._id': productId },
+          { _id: cartId, 'products.product': productId },
           { $set: { 'products.$.quantity': newQuantity } }
       );
 
