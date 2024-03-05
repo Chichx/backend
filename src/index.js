@@ -2,6 +2,8 @@ const express = require("express")
 const http = require('http')
 const handlebars = require('express-handlebars')
 const { Server } = require('socket.io')
+const session = require('express-session');
+const MongoStore = require('connect-mongo')
 
 const Database = require('./dao/db/mongo/index')
 const ChatModel = require('./dao/db/mongo/models/messages.model')
@@ -13,10 +15,22 @@ const homeProductsRouter = require("./routes/homeproducts.routes")
 const routerRealTimeProducts = require("./routes/realTimeProducts.routes")
 const chatRouter = require("./routes/chat.routes")
 const cartsRouter = require("./routes/carts.routes")
+const authRouter = require("./routes/auth.views.routes")
+const authApiRouter = require("./routes/auth.routes")
 
 const productManager = new ProductManager()
 
 const app = express()
+
+app.use(session({
+  store: MongoStore.create({
+    mongoUrl: 'mongodb+srv://chicho:chicho123@chichocoder.cpdxtvh.mongodb.net/ecommerce'
+  }),
+  secret: 'secreto-chicho',
+  resave: true,
+  saveUninitialized: true
+}))
+
 const server = http.createServer(app)
 const PORT = 8080 || process.env.PORT;
 
@@ -32,13 +46,24 @@ app.set('view engine', 'handlebars')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+function auth(req, res, next) {
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+}
+
 //Routes
 app.use('/api/products', routerProd) 
 app.use('/api/carts', routerCart) 
-app.use('/products', homeProductsRouter)
-app.use('/carts', cartsRouter)
-app.use('/realtimeproducts', routerRealTimeProducts)
-app.use('/chat', chatRouter)
+app.use('/products', auth, homeProductsRouter)
+app.use('/carts', auth, cartsRouter)
+app.use('/realtimeproducts', auth, routerRealTimeProducts)
+app.use('/chat', auth, chatRouter)
+app.use('/', authRouter)
+app.use('/auth/', authApiRouter)
+
 
 //Socket
 const io = new Server(server)
