@@ -1,26 +1,30 @@
-const express = require("express")
-const http = require('http')
-const handlebars = require('express-handlebars')
-const { Server } = require('socket.io')
+const express = require("express");
+const http = require('http');
+const handlebars = require('express-handlebars');
+const { Server } = require('socket.io');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo');
+const passport = require("passport");
 
-const Database = require('./dao/db/mongo/index')
-const ChatModel = require('./dao/db/mongo/models/messages.model')
-const ProductManager = require("./dao/db/mongo/managers/productManager")
+const Database = require('./dao/db/mongo/index');
+const ChatModel = require('./dao/db/mongo/models/messages.model');
+const ProductManager = require("./dao/db/mongo/managers/productManager");
 
-const routerProd = require("./routes/products.routes")
-const routerCart = require("./routes/cart.routes")
-const homeProductsRouter = require("./routes/homeproducts.routes")
-const routerRealTimeProducts = require("./routes/realTimeProducts.routes")
-const chatRouter = require("./routes/chat.routes")
-const cartsRouter = require("./routes/carts.routes")
-const authRouter = require("./routes/auth.views.routes")
-const authApiRouter = require("./routes/auth.routes")
+const routerProd = require("./routes/products.routes");
+const routerCart = require("./routes/cart.routes");
+const homeProductsRouter = require("./routes/homeproducts.routes");
+const routerRealTimeProducts = require("./routes/realTimeProducts.routes");
+const chatRouter = require("./routes/chat.routes");
+const cartsRouter = require("./routes/carts.routes");
+const authRouter = require("./routes/auth.views.routes");
+const authApiRouter = require("./routes/auth.routes");
+const sessionsRouter = require("./routes/sessions.routes");
 
-const productManager = new ProductManager()
+const initPassport = require("./config/passport.config");
 
-const app = express()
+const productManager = new ProductManager();
+
+const app = express();
 
 app.use(session({
   store: MongoStore.create({
@@ -30,6 +34,9 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }))
+initPassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 const server = http.createServer(app)
 const PORT = 8080 || process.env.PORT;
@@ -50,7 +57,7 @@ function auth(req, res, next) {
   if (req.session.user) {
     next();
   } else {
-    res.redirect("/login");
+    res.redirect("/");
   }
 }
 
@@ -63,6 +70,7 @@ app.use('/realtimeproducts', auth, routerRealTimeProducts)
 app.use('/chat', auth, chatRouter)
 app.use('/', authRouter)
 app.use('/auth/', authApiRouter)
+app.use('/api/sessions', sessionsRouter)
 
 
 //Socket

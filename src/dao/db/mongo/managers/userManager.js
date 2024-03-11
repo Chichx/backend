@@ -1,4 +1,5 @@
 const UserModel = require("../models/users.model")
+const { createHash, isValidatePass } = require('../../../../utils/crypt')
 
 class UserManager {
   constructor() {}
@@ -10,7 +11,7 @@ class UserManager {
           last_name: last_name,
           email: email,
           age: age,
-          password: password
+          password: createHash(password)
         });
 
         return { message: "Usuario creado correctamente", userData: user };
@@ -26,12 +27,25 @@ class UserManager {
 
   async findUser(email, password) {
     try {
-        const user = await UserModel.findOne({ email, password })
-        return user
-  } catch(error) {
-    return { error: error.message };
- }
-}
+      const user = await UserModel.findOne({ email });
+      console.log(user)
+  
+      if (!user) {
+        return { error: "Usuario no encontrado", statusCode: 404 };
+      }
+
+      const isValidPassword = isValidatePass(password, user.password);
+  
+      if (!isValidPassword) {
+        return { error: "Contraseña incorrecta", statusCode: 401 };
+      }
+  
+      return user;
+    } catch (error) {
+      console.error("Error en findUser:", error);
+      return { error: "Error durante la autenticación", statusCode: 500 };
+    }
+  }
 }
 
 module.exports = UserManager;

@@ -13,9 +13,11 @@ homeProductsRouter.get('/', async (req, res) => {
 
         const productsFinales = products.payload.map(product => ({ ...product.toObject() }));
 
+        const userData = req.session.user
     
         res.status(200).render("products", {
           products: productsFinales,
+          user: userData
         });
     } catch (error) {
         console.log(`Error obteniendo los productos: ${error}`);

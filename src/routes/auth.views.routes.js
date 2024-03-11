@@ -3,7 +3,7 @@ const {Router} = express
 
 const router = Router()
 
-router.get('/login', (req, res) => {
+router.get('/', (req, res) => {
     res.render('login')
 })
 
@@ -12,7 +12,7 @@ router.get('/register', (req, res) => {
 })
 
 router.get('/profile', (req, res) => {
-    if (!req.session.user) return res.redirect('/login')
+    if (!req.session.user) return res.redirect('/')
     
     let userData = req.session.user;
     res.render("profile", { userData: userData });  
