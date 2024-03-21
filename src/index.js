@@ -39,7 +39,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 const server = http.createServer(app)
-const PORT = 8080 || process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 //Carpeta static
 app.use(express.static(__dirname + '/public'))
@@ -71,7 +71,9 @@ app.use('/chat', auth, chatRouter)
 app.use('/', authRouter)
 app.use('/auth/', authApiRouter)
 app.use('/api/sessions', sessionsRouter)
-
+app.use('*', async (req, res) => {
+  res.status(404).render("404")
+});
 
 //Socket
 const io = new Server(server)

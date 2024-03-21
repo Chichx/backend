@@ -1,0 +1,23 @@
+<div
+    class="absolute top-96 right-0 w-48 h-48 blur-[180px] bg-gradient-to-r from-blue-300 to-blue-500 rounded-3xl z-[-1]">
+</div>
+<div
+    class="absolute bottom-0 left-0 w-48 h-48 blur-[200px] bg-gradient-to-r from-blue-300 to-blue-500 rounded-3xl z-[-1]">
+</div>
+<div class="relative flex flex-col h-screen items-center justify-center">
+    <div class="flex items-center">
+        <h3 class="text-4xl text-white font-semibold border-r border-zinc-400 px-6 py-2">404</h3>
+        <span class="px-6 text-lg text-zinc-400">Not found</span>
+
+    </div>
+
+    <div class="absolute bottom-6 text-center">
+        <a onclick="backToPage()" class="text-zinc-400 cursor-pointer">back </a>
+    </div>
+</div>
+
+<script>
+    function backToPage() {
+        window.history.back();
+    }
+</script>

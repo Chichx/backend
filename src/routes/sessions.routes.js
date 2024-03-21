@@ -12,4 +12,20 @@ router.get('/callback', passport.authenticate('github', { failureRedirect: '/' }
     return res.redirect('/products');
 }) 
 
+router.get('/spotify', passport.authenticate('spotify', {})) 
+
+router.get('/callback/spotify', passport.authenticate('spotify', { failureRedirect: '/' }), (req, res) =>{
+    req.session.user = req.user
+
+    return res.redirect('/products');
+}) 
+
+router.get('/current', (req, res) => {
+    if (req.session && req.session.user) {
+        res.status(200).json({ user: req.session.user });
+    } else {
+        res.status(401).json({ message: 'No hay sesion activa' });
+    }
+});
+
 module.exports = router

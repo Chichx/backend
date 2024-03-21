@@ -28,7 +28,6 @@ class UserManager {
   async findUser(email, password) {
     try {
       const user = await UserModel.findOne({ email });
-      console.log(user)
   
       if (!user) {
         return { error: "Usuario no encontrado", statusCode: 404 };
@@ -39,7 +38,7 @@ class UserManager {
       if (!isValidPassword) {
         return { error: "Contraseña incorrecta", statusCode: 401 };
       }
-  
+
       return user;
     } catch (error) {
       console.error("Error en findUser:", error);

@@ -1,5 +1,6 @@
 const passport = require('passport');
 const github = require('passport-github2')
+const SpotifyStrategy = require('passport-spotify').Strategy;
 const UserModel = require('../dao/db/mongo/models/users.model')
 
 const initPassport = () => {
@@ -18,7 +19,6 @@ const initPassport = () => {
                     user = await UserModel.create({
                         first_name: name,
                         email,
-                        password: null,
                         profilePicture: profile._json.avatar_url,
                         github: profile
                     });
@@ -35,6 +35,40 @@ const initPassport = () => {
             }
         }
     ))
+
+    passport.use('spotify', new SpotifyStrategy(
+        {
+            clientID: "45259f3a7e8a4aec854271a74e4ed734",
+            clientSecret: "c02b85d2598646df9c9fa8a01892e155",
+            callbackURL: "http://localhost:8080/api/sessions/callback/spotify"
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                let { id, displayName, emails, photos } = profile;
+                let email = emails && emails.length > 0 ? emails[0].value : null;
+
+                let user = await UserModel.findOne({ spotifyId: id });
+
+                if (!user) {
+                    user = await UserModel.create({
+                        first_name: displayName,
+                        email,
+                        profilePicture: photos && photos.length > 0 ? photos[0].value : null,
+                        spotify: profile
+                    });
+                } else {
+                    user.first_name = displayName;
+                    user.profilePicture = photos && photos.length > 0 ? photos[0].value : null;
+                    user.spotify = profile;
+                    await user.save();
+                }
+
+                return done(null, user);
+            } catch (error) {
+                return done(error);
+            }
+        }
+    ));
 }
 
 passport.serializeUser((user, done)=>{
