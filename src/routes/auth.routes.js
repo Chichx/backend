@@ -1,6 +1,6 @@
 const express = require('express')
 const {Router} = express
-const UserManager = require('../dao/db/mongo/managers/userManager');
+const UserManager = require('../services/userService');
 
 const router = Router()
 const userManager = new UserManager();

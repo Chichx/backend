@@ -6,9 +6,9 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require("passport");
 
-const Database = require('./dao/db/mongo/index');
-const ChatModel = require('./dao/db/mongo/models/messages.model');
-const ProductManager = require("./dao/db/mongo/managers/productManager");
+const Database = require('./db/mongo/index');
+const ChatModel = require('./models/messages.model');
+const ProductManager = require("./services/productService");
 
 const routerProd = require("./routes/products.routes");
 const routerCart = require("./routes/cart.routes");
@@ -28,7 +28,7 @@ const app = express();
 
 app.use(session({
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://chicho:chicho123@chichocoder.cpdxtvh.mongodb.net/ecommerce'
+    mongoUrl: process.env.MONGO_URL
   }),
   secret: 'secreto-chicho',
   resave: true,

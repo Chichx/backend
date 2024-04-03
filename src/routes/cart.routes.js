@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const CartManager = require('../dao/db/mongo/managers/cartManager');
+const CartManager = require('../services/cartService');
 
 const cartManager = new CartManager();
 
