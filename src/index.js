@@ -6,9 +6,9 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require("passport");
 
-const Database = require('./db/mongo/index');
-const ChatModel = require('./models/messages.model');
-const ProductManager = require("./services/productService");
+const Database = require('./dao/db/mongo/index');
+const ChatModel = require('./dao/db/models/messages.model');
+const ProductService = require("./services/productService");
 
 const routerProd = require("./routes/products.routes");
 const routerCart = require("./routes/cart.routes");
@@ -22,15 +22,19 @@ const sessionsRouter = require("./routes/sessions.routes");
 
 const initPassport = require("./config/passport.config");
 
-const productManager = new ProductManager();
+const config = require("./config/config")
+
+const auth = require("./middleware/auth") ;
+
+const productService = new ProductService();
 
 const app = express();
 
 app.use(session({
   store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URL
+    mongoUrl: config.MONGO_URL
   }),
-  secret: 'secreto-chicho',
+  secret: config.SECRET_KEY_SESSION,
   resave: true,
   saveUninitialized: true
 }))
@@ -39,7 +43,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 const server = http.createServer(app)
-const PORT = process.env.PORT || 8080;
 
 //Carpeta static
 app.use(express.static(__dirname + '/public'))
@@ -52,14 +55,6 @@ app.set('view engine', 'handlebars')
 //Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
-
-function auth(req, res, next) {
-  if (req.session.user) {
-    next();
-  } else {
-    res.redirect("/");
-  }
-}
 
 //Routes
 app.use('/api/products', routerProd) 
@@ -82,7 +77,7 @@ io.on('connection', async (socket) =>{
 
   socket.on("getProducts", async () => {
     try {
-      const products = await productManager.getProducts({ limit: 10, page: 1, sort: null, query: null });
+      const products = await productService.getProducts({ limit: 10, page: 1, sort: null, query: null });
       socket.emit("productsData", products.payload);
     } catch (error) {
       console.error("Error al obtener productos:", error.message);
@@ -91,8 +86,8 @@ io.on('connection', async (socket) =>{
 
   socket.on("addProduct", async (addProd) => {
     try {
-      productManager.addProduct(addProd);
-      const products = await productManager.getProducts({ limit: 10, page: 1, sort: null, query: null });
+      productService.addProduct(addProd);
+      const products = await productService.getProducts({ limit: 10, page: 1, sort: null, query: null });
       socket.emit("productsData", products.payload);
     } catch (error) {
       console.error("Error al agregar nuevo producto:", error.message);
@@ -101,7 +96,7 @@ io.on('connection', async (socket) =>{
 
   socket.on("deleteProduct", async (productId) => {
     try {
-      productManager.deleteProduct(productId);
+      productService.deleteProduct(productId);
       socket.emit("productDeleted", productId);
     } catch (error) {
       console.error("Error al eliminar producto:", error.message);
@@ -129,7 +124,7 @@ io.on('connection', async (socket) =>{
 
 })
 
-server.listen(PORT, () => {
-    console.log(`Se inicio con el puerto ${PORT}`)
+server.listen(config.PORT, () => {
+    console.log(`Se inicio con el puerto ${config.PORT}`)
     Database.connect()
 })

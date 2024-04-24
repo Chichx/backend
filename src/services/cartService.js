@@ -1,5 +1,5 @@
-const CartModel = require("../models/carts.model")
-const ProductModel = require('../models/products.model'); 
+const CartModel = require("../dao/db/models/carts.model")
+const ProductModel = require('../dao/db/models/products.model'); 
 const crypto = require('crypto');
 
 function generateCartId() {

@@ -1,15 +1,9 @@
 const { Router } = require("express")
+const { ChatView } = require( "../controllers/chat.controllers")
+
 
 const chatRouter = Router()
 
-chatRouter.get('/', async (req, res) => {
-    try {
-    
-        res.status(200).render("chat", { js: "chat.js"})
-
-    } catch (error) {
-        console.log(`Error obteniendo los productos: ${error}`);
-    }
-})
+chatRouter.get('/', async (req, res) => {ChatView(req, res)})
 
 module.exports = chatRouter

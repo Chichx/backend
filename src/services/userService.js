@@ -1,4 +1,4 @@
-const UserModel = require("../models/users.model")
+const UserModel = require("../dao/db/models/users.model")
 const { createHash, isValidatePass } = require('../utils/crypt')
 
 class UserManager {

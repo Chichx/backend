@@ -1,4 +1,4 @@
-const ProductModel = require("../models/products.model")
+const ProductModel = require("../dao/db/models/products.model")
 const crypto = require("crypto")
 
 
@@ -92,6 +92,26 @@ class ProductManager{
           return false;
         }
       }
+
+      async updateProductStock(productId, quantityToSubtract) {
+        try {
+            const product = await ProductModel.findById(productId);
+            
+            if (!product) {
+                throw new Error(`Producto con ID ${productId} no encontrado`);
+            }
+    
+            product.stock -= quantityToSubtract;
+    
+            await product.save();
+    
+            return true;
+        } catch (error) {
+            console.error(`Error al actualizar el stock del producto: ${error}`);
+            return false;
+        }
+    }
+    
     
       async deleteProduct(id) {
         try {

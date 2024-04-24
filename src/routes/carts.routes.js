@@ -1,31 +1,9 @@
 const { Router } = require("express");
-const CartManager = require("../services/cartService");
-
-const cartManager = new CartManager();
+const {getCart, PurchaseCart} = require( "../controllers/carts.controllers")
 
 const cartsRouter = Router();
 
-cartsRouter.get('/:cid', async (req, res) => {
-    try {
-        const cid = req.params.cid;
-        const cart = await cartManager.getCart(cid);
-
-        const cartProducts = cart.cart.map(cartProduct => ({
-            product: cartProduct.product.toObject(),
-            quantity: cartProduct.quantity,
-          }));
-    
-        if (cart.success) {
-          res.status(200).render("carts", {
-            cartProduct: cartProducts,
-          });
-        } else {
-          res.status(404).json({ message: 'Carrito no encontrado' });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error interno del servidor' });
-    }
-});
+cartsRouter.get('/:cid', async (req, res) => {getCart(req, res)});
+cartsRouter.get('/:cid/purchase', async (req, res) => {PurchaseCart(req, res)});
 
 module.exports = cartsRouter;

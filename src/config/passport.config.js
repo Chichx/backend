@@ -1,7 +1,7 @@
 const passport = require('passport');
 const github = require('passport-github2')
 const SpotifyStrategy = require('passport-spotify').Strategy;
-const UserModel = require('../dao/db/mongo/models/users.model')
+const UserModel = require('../dao/db/models/users.model')
 
 const initPassport = () => {
     passport.use('github', new github.Strategy(
