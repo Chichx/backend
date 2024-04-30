@@ -17,11 +17,6 @@ class UserManager {
         return { message: "Usuario creado correctamente", userData: user };
       } catch (error) {
         console.log(error);
-        if (error.code == 11000) {
-            return { error: "El usuario ya existe" };
-        } else {
-            return { error: error.message };
-        }
     }
   }
 

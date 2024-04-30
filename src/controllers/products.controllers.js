@@ -1,4 +1,7 @@
 const ProductService = require("../services/productService");
+const CustomError = require("../services/errors/CustomError")
+const EnumError = require("../services/errors/ErrorEnum")
+const { productNotFound, productExist, productFields } = require("../services/errors/MessagesError")
 
 const productService = new ProductService();
 
@@ -21,7 +24,14 @@ async function getProductById(req, res) {
         if (prod) {
             res.status(200).send(prod);
         } else {
-            res.status(404).send({ message: "No se ha encontrado el producto" });
+            const error = CustomError.createError({
+                name: "Product error",
+                cause: productNotFound(prod),
+                message: "Producto no encontrado",
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(404).json({ error });
         }
     } catch (error) {
         console.error(error);
@@ -36,13 +46,27 @@ async function addProduct(req, res) {
         const { name, description, price, code, status, stock, category, thumbnail } = req.body;
 
         if (!name || !description || !price || !code || !status || !stock || !category) {
-            return res.status(400).send({ message: 'Faltan datos por completar' });
+            const error = CustomError.createError({
+                name: "Product error",
+                cause: productFields({name, description ,price, code, status, stock, category}),
+                message: "Faltan datos por completar",
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(400).json({ error });
         }
 
         if (conf) {
             res.status(201).send("Producto creado");
         } else {
-            res.status(400).send("Producto ya existente");
+            const error = CustomError.createError({
+                name: "Product error",
+                cause: productExist(prod),
+                message: "Producto ya existente",
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(400).json({ error });
         }
     } catch (error) {
         console.error(error);
@@ -64,7 +88,14 @@ async function updateProduct(req, res) {
         if (conf) {
             res.status(200).send("Producto actualizado correctamente");
         } else {
-            res.status(404).send("Producto no encontrado");
+            const error = CustomError.createError({
+                name: "Product error",
+                cause: productNotFound(prod),
+                message: "Producto no encontrado",
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(404).json({ error });
         }
     } catch (error) {
         console.error(error);
@@ -80,7 +111,14 @@ async function deleteProduct(req, res) {
         if (conf) {
             res.status(200).send("Producto eliminado correctamente");
         } else {
-            res.status(404).send("Producto no encontrado");
+            const error = CustomError.createError({
+                name: "Product error",
+                cause: productNotFound(prod),
+                message: "Producto no encontrado",
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(404).json({ error });
         }
     } catch (error) {
         console.error(error);

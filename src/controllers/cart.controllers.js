@@ -1,4 +1,7 @@
 const CartService = require('../services/cartService');
+const CustomError = require("../services/errors/CustomError")
+const EnumError = require("../services/errors/ErrorEnum")
+const { cartError, cartNotFound, productFields } = require("../services/errors/MessagesError")
 
 const cartService = new CartService();
 
@@ -9,7 +12,14 @@ async function addCart(req, res) {
         if (cart.success) {
           res.status(201).json({ data: cart.cart });
         } else {
-          res.status(500).json({ message: 'Error al agregar el carrito' });
+            const error = CustomError.createError({
+                name: "Cart error",
+                cause: cartError(),
+                message: "Error al agregar el carrito",
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(500).json({ error });
         }
       } catch (error) {
         console.error(error);
@@ -25,7 +35,14 @@ async function getCart(req, res) {
         if (cart.success) {
           res.status(200).json(cart.cart);
         } else {
-          res.status(404).json({ message: 'Carrito no encontrado' });
+            const error = CustomError.createError({
+                name: "Cart error",
+                cause: cartNotFound(cart.cart),
+                message: "Carrito no encontrado",
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(500).json({ error });
         }
       } catch (error) {
         console.error(error);
@@ -57,7 +74,14 @@ async function removeProductFromCart(req, res) {
         if (result.success) {
             res.status(200).send(result);
         } else {
-            res.status(404).send({ message: result.message });
+            const error = CustomError.createError({
+                name: "Cart error",
+                cause: cartError(result.message),
+                message: result.message,
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(404).json({ error });
         }
     } catch (error) {
         console.error(error);
@@ -75,7 +99,14 @@ async function updateCart(req, res) {
         if (result.success) {
             res.status(200).send(result);
         } else {
-            res.status(404).send({ message: result.message });
+            const error = CustomError.createError({
+                name: "Cart error",
+                cause: cartError(result.message),
+                message: result.message,
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(404).json({ error });
         }
     } catch (error) {
         console.error(error);
@@ -94,7 +125,14 @@ async function updateProductQuantity(req, res) {
         if (result.success) {
             res.status(200).send(result);
         } else {
-            res.status(404).send({ message: result.message });
+            const error = CustomError.createError({
+                name: "Cart error",
+                cause: cartError(result.message),
+                message: result.message,
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(404).json({ error });
         }
     } catch (error) {
         console.error(error);
@@ -111,7 +149,14 @@ async function removeAllProducts(req, res) {
         if (result.success) {
             res.status(200).send(result);
         } else {
-            res.status(404).send({ message: result.message });
+            const error = CustomError.createError({
+                name: "Cart error",
+                cause: cartError(result.message),
+                message: result.message,
+                code: EnumError.DATABASE_ERROR
+              });
+      
+              return res.status(404).json({ error });
         }
     } catch (error) {
         console.error(error);
