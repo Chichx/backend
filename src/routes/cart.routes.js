@@ -7,13 +7,13 @@ const cartManager = new CartManager();
 
 const routerCart = Router();
 
-routerCart.post('/', async (req, res) => {addCart(req, res)});
-routerCart.get('/:cid', async (req, res) => {getCart(req,res)});
-routerCart.post('/:cid/product/:pid', async (req, res) => {addProductToCart(req, res)});
-routerCart.delete('/:cid/product/:pid', async (req, res) => {removeProductFromCart(req, res)});
-routerCart.put('/:cid', async (req, res) => {updateCart(req, res)});
-routerCart.put('/:cid/product/:pid', async (req, res) => {updateProductQuantity(req, res)});
-routerCart.delete('/:cid', async (req, res) => {removeAllProducts(req, res)});
+routerCart.post('/', addCart);
+routerCart.get('/:cid',getCart);
+routerCart.post('/:cid/product/:pid', addProductToCart);
+routerCart.delete('/:cid/product/:pid', removeProductFromCart);
+routerCart.put('/:cid', updateCart);
+routerCart.put('/:cid/product/:pid', updateProductQuantity);
+routerCart.delete('/:cid', removeAllProducts);
 
 
 module.exports = routerCart;

@@ -3,10 +3,10 @@ const {getProducts, getProductById, addProduct, updateProduct, deleteProduct} = 
 
 const routerProd = Router();
 
-routerProd.get('/', async (req, res) => {getProducts(req, res)});
-routerProd.get('/:id', async (req, res) => {getProductById(req, res)});
-routerProd.post('/', async (req, res) => {addProduct(req, res)});
-routerProd.put('/:id', async (req, res) => {updateProduct(req, res)});
-routerProd.delete('/:id', async (req, res) => {deleteProduct(req, res)});
+routerProd.get('/', getProducts);
+routerProd.get('/:id', getProductById);
+routerProd.post('/', addProduct);
+routerProd.put('/:id', updateProduct);
+routerProd.delete('/:id', deleteProduct);
 
 module.exports = routerProd;

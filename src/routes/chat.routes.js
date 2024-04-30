@@ -4,6 +4,6 @@ const { ChatView } = require( "../controllers/chat.controllers")
 
 const chatRouter = Router()
 
-chatRouter.get('/', async (req, res) => {ChatView(req, res)})
+chatRouter.get('/', ChatView)
 
 module.exports = chatRouter

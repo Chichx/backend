@@ -1,12 +1,14 @@
 const express = require('express')
 const {Router} = express
 const { Login, Register, Logout } = require('../controllers/auth.controllers')
+const ErrorMiddleware = require('../middleware/errors');
 
 const router = Router()
 
-router.post("/login", async (req, res) => {Login(req, res)});
-router.post("/register", async (req, res) => {Register(req, res)})
-router.get("/logout", (req, res) => {Logout(req, res)})
+router.post("/login", Login);
+router.post("/register", Register)
+router.get("/logout", Logout)
+router.use(ErrorMiddleware)
 
 module.exports = router
 

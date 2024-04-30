@@ -1,5 +1,8 @@
 const UserService = require('../services/userService');
 const userService = new UserService();
+const CustomError = require("../services/errors/CustomError")
+const EnumError = require("../services/errors/ErrorEnum")
+const { generateUserErrorMessage, existingUser } = require("../services/errors/MessagesError")
 
 
 async function Login(req, res) {
@@ -22,6 +25,15 @@ async function Login(req, res) {
 
 async function Register(req, res) {
     const { first_name, last_name, email, age, password } = req.body;
+
+    if (!first_name || !email) {
+      return CustomError.createError({
+          name: 'User creation error',
+          cause: generateUserErrorMessage({ first_name, last_name, email, age, password }),
+          message: 'All fields are required!',
+          code: EnumError.INVALID_TYPES_ERROR
+      });
+  }
 
     try {
       await userService.createNewUser({

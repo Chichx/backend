@@ -19,12 +19,13 @@ const cartsRouter = require("./routes/carts.routes");
 const authRouter = require("./routes/auth.views.routes");
 const authApiRouter = require("./routes/auth.routes");
 const sessionsRouter = require("./routes/sessions.routes");
+const mockingRouter = require("./routes/mockingproducts.routes");
 
 const initPassport = require("./config/passport.config");
 
 const config = require("./config/config")
 
-const auth = require("./middleware/auth") ;
+const auth = require("./middleware/auth");
 
 const productService = new ProductService();
 
@@ -38,6 +39,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }))
+
 initPassport()
 app.use(passport.initialize())
 app.use(passport.session())
@@ -66,9 +68,11 @@ app.use('/chat', auth, chatRouter)
 app.use('/', authRouter)
 app.use('/auth/', authApiRouter)
 app.use('/api/sessions', sessionsRouter)
+app.use('/mockingproducts', mockingRouter)
 app.use('*', async (req, res) => {
   res.status(404).render("404")
 });
+
 
 //Socket
 const io = new Server(server)

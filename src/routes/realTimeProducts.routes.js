@@ -3,6 +3,6 @@ const {realTimeProducts} = require("../controllers/realtimeproducts.controllers"
 
 const realTimeProductsRouter = Router()
 
-realTimeProductsRouter.get('/', async (req, res) => {realTimeProducts(req, res)})
+realTimeProductsRouter.get('/', realTimeProducts)
 
 module.exports = realTimeProductsRouter

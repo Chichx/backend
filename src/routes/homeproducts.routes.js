@@ -3,8 +3,7 @@ const {HomeView} = require("../controllers/home.controllers")
 
 const homeProductsRouter = Router()
 
-homeProductsRouter.get('/', async (req, res) => {HomeView(req, res)});
-
+homeProductsRouter.get('/', HomeView);
 
 module.exports = homeProductsRouter
 
