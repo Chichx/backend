@@ -23,7 +23,7 @@ async function HomeView(req, res) {
           user: userData
         });
     } catch (error) {
-        console.log(`Error obteniendo los productos: ${error}`);
+        req.logger.error(`Error HomeView: ${error}`);
     }
 }
 

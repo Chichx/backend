@@ -22,7 +22,7 @@ async function addCart(req, res) {
               return res.status(500).json({ error });
         }
       } catch (error) {
-        console.error(error);
+        req.logger.error(`Error addCart: ${error}`);
         res.status(500).json({ message: 'Error interno del servidor' });
       }
 }
@@ -45,7 +45,7 @@ async function getCart(req, res) {
               return res.status(500).json({ error });
         }
       } catch (error) {
-        console.error(error);
+        req.logger.error(`Error getCart: ${error}`);
         res.status(500).json({ message: 'Error interno del servidor' });
       }
 }
@@ -59,7 +59,7 @@ async function addProductToCart(req, res) {
     
         res.status(200).json(result);
       } catch (error) {
-        console.error(error);
+        req.logger.error(`Error addProductToCart: ${error}`);
         res.status(500).json({ message: error.error || 'Error interno del servidor' });
       }
 }
@@ -84,7 +84,7 @@ async function removeProductFromCart(req, res) {
               return res.status(404).json({ error });
         }
     } catch (error) {
-        console.error(error);
+        req.logger.error(`Error removeProductFromCart: ${error}`);
         res.status(500).send({ message: 'Error interno del servidor', error: error });
     }
 }
@@ -109,7 +109,7 @@ async function updateCart(req, res) {
               return res.status(404).json({ error });
         }
     } catch (error) {
-        console.error(error);
+        req.logger.error(`Error updateCart: ${error}`);
         res.status(500).send({ message: 'Error interno del servidor', error: error });
     }
 }
@@ -135,7 +135,7 @@ async function updateProductQuantity(req, res) {
               return res.status(404).json({ error });
         }
     } catch (error) {
-        console.error(error);
+        req.logger.error(`Error updateProductQuantity: ${error}`);
         res.status(500).send({ message: 'Error interno del servidor', error: error });
     }
 }
@@ -159,7 +159,7 @@ async function removeAllProducts(req, res) {
               return res.status(404).json({ error });
         }
     } catch (error) {
-        console.error(error);
+        req.logger.error(`Error removeAllProducts: ${error}`);
         res.status(500).send({ message: 'Error interno del servidor', error: error });
     }
 }

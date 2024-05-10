@@ -4,7 +4,7 @@ function realTimeProducts(req, res) {
         res.status(200).render("realTimeProducts", { js: "realTimeProducts.js"})
 
     } catch (error) {
-        console.log(`Error obteniendo los productos: ${error}`);
+        req.logger.error(`Error realTimeProducts: ${error}`);
     }
 }
 

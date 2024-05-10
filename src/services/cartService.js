@@ -21,7 +21,6 @@ class CartManager {
 
       return { success: true, cart: newCart };
     } catch (error) {
-      console.log(`Error al agregar el carro de compras: ${error}`);
       throw error;
     }
   }
@@ -36,7 +35,6 @@ class CartManager {
         return { success: false, error: 'Carrito no encontrado' };
       }
     } catch (error) {
-      console.log(`Error al obtener el carrito: ${error}`);
       throw error;
     }
   }
@@ -70,7 +68,6 @@ class CartManager {
 
       return { success: true, cart };
     } catch (error) {
-      console.log(`Error al agregar producto al carrito: ${error}`);
       throw error;
     }
   }
@@ -89,7 +86,6 @@ class CartManager {
     }
 
     } catch (error) {
-        console.log(`Error al eliminar producto del carrito: ${error}`);
         throw error;
     }
 }
@@ -107,7 +103,6 @@ async updateCart(cartId, updatedProducts) {
 
       return { success: true, message: 'Carrito actualizado correctamente', data: result };
   } catch (error) {
-      console.log(`Error al actualizar el carrito: ${error}`);
       throw error;
   }
 }
@@ -125,7 +120,6 @@ async updateProductQuantity(cartId, productId, newQuantity) {
 
       return { success: true, message: 'Cantidad de producto actualizada correctamente', data: result };
   } catch (error) {
-      console.log(`Error al actualizar la cantidad del producto en el carrito: ${error}`);
       throw error;
   }
 }
@@ -143,7 +137,6 @@ async removeAllProducts(cartId) {
 
       return { success: true, message: 'Todos los productos del carrito se eliminaron correctamente', data: result };
   } catch (error) {
-      console.log(`Error al eliminar todos los productos del carrito: ${error}`);
       throw error;
   }
 }

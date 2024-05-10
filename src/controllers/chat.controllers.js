@@ -4,7 +4,7 @@ function ChatView(req, res) {
         res.status(200).render("chat", { js: "chat.js"})
 
     } catch (error) {
-        console.log(`Error obteniendo los productos: ${error}`);
+        req.logger.error(`Error Chat: ${error}`);
     }
 }
 

@@ -27,7 +27,7 @@ async function Login(req, res) {
         res.status(200).redirect('/products');
       }
     } catch (error) {
-      console.error("Error", error);
+      req.logger.error(`Error Login: ${error}`);
       res.status(500).json({ message: "Error en el servidor" });
     }
 }
@@ -70,6 +70,7 @@ async function Register(req, res) {
 
     res.status(200).redirect("/");
   } catch (error) {
+    req.logger.error(`Error Register: ${error}`);
     res.status(500).json(error);
   }
 }
@@ -78,6 +79,7 @@ async function Register(req, res) {
 async function Logout(req, res) {
     req.session.destroy((err) => {
         if (err) {
+          req.logger.error(`Error Logout: ${err}`);
           res.status(500).json({ message: "Error al cerrar sesion" });
         } else {
           res.status(200).redirect("/");

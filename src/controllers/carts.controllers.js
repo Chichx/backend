@@ -25,7 +25,7 @@ async function getCart(req, res) {
           res.status(404).json({ message: 'Carrito no encontrado' });
         }
     } catch (error) {
-        console.error(error);
+        req.logger.error(`Error getCart: ${error}`);
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 }
@@ -69,7 +69,8 @@ async function PurchaseCart(req, res) {
 
         res.status(200).json({ message: 'Compra realizada exitosamente', ticket });
     } catch (error) {
-        console.error(error);
+        req.logger.error(`Error PurchaseCart: ${error}`);
+
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 }
