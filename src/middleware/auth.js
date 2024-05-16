@@ -19,6 +19,17 @@ function auth(req, res, next) {
         }
     }
 
+    if (userRole == 'Premium') {
+        if (req.originalUrl.startsWith('/chat') ||
+            req.originalUrl.startsWith('/products') ||
+            req.originalUrl.startsWith('/carts') ||
+            req.originalUrl.startsWith('/realTimeProducts')) {
+            return next();
+        } else {
+            return res.status(403).send("Acceso no autorizado");
+        }
+    }
+
     return res.status(403).send("Acceso no autorizado");
 }
 

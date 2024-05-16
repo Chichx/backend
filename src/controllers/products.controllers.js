@@ -41,7 +41,11 @@ async function getProductById(req, res) {
 
 async function addProduct(req, res) {
     try {
-        const conf = await productService.addProduct(req.body);
+        if (!req.session.user || !req.session.user._id) {
+            return res.status(401).json({ message: "Debes iniciar sesión para agregar un producto" });
+        }
+
+        const ownerId = req.session.user._id;
 
         const { name, description, price, code, status, stock, category, thumbnail } = req.body;
 
@@ -55,6 +59,20 @@ async function addProduct(req, res) {
       
               return res.status(400).json({ error });
         }
+
+        const productData = {
+            name,
+            description,
+            price,
+            code,
+            status,
+            stock,
+            category,
+            thumbnail,
+            ownerId
+        };
+        
+        const conf = await productService.addProduct(productData);
 
         if (conf) {
             res.status(201).send("Producto creado");
@@ -106,19 +124,47 @@ async function updateProduct(req, res) {
 async function deleteProduct(req, res) {
     try {
         const { id } = req.params;
-        const conf = await productService.deleteProduct(id);
 
-        if (conf) {
-            res.status(200).send("Producto eliminado correctamente");
+        if (!req.session.user) {
+            return res.status(401).json({ message: "Debes iniciar sesión para eliminar un producto" });
+        }
+
+        const userRole = req.session.user.role;
+
+        if (userRole.toLowerCase() === 'admin') {
+        const deletedProduct = await productService.deleteProduct(id);
+            if (deletedProduct) {
+                return res.status(200).json({ message: "Producto eliminado correctamente" });
+            } else {
+                const error = CustomError.createError({
+                    name: "Product error",
+                    cause: productNotFound(prod),
+                    message: "Producto no encontrado",
+                    code: EnumError.DATABASE_ERROR
+                  });
+          
+                  return res.status(404).json({ error });
+            }
+        }
+
+        const ownerId = req.session.user._id;
+        const product = await productService.getProductById(id);
+        if (product && product.owner.toString() === ownerId) {
+            const deletedProduct = await productService.deleteProduct(id);
+            if (deletedProduct) {
+                return res.status(200).json({ message: "Producto eliminado correctamente" });
+            } else {
+                const error = CustomError.createError({
+                    name: "Product error",
+                    cause: productNotFound(prod),
+                    message: "Producto no encontrado",
+                    code: EnumError.DATABASE_ERROR
+                  });
+          
+                  return res.status(404).json({ error });
+            }
         } else {
-            const error = CustomError.createError({
-                name: "Product error",
-                cause: productNotFound(prod),
-                message: "Producto no encontrado",
-                code: EnumError.DATABASE_ERROR
-              });
-      
-              return res.status(404).json({ error });
+            return res.status(403).json({ message: "No tienes permiso para eliminar este producto" });
         }
     } catch (error) {
         req.logger.error(`Error deleteProduct: ${error}`);

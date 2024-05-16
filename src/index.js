@@ -12,6 +12,7 @@ const ProductService = require("./services/productService");
 
 const routerProd = require("./routes/products.routes");
 const routerCart = require("./routes/cart.routes");
+const userProd = require("./routes/user.routes");
 const homeProductsRouter = require("./routes/homeproducts.routes");
 const routerRealTimeProducts = require("./routes/realTimeProducts.routes");
 const chatRouter = require("./routes/chat.routes");
@@ -65,6 +66,7 @@ app.use(addLogger);
 //Routes
 app.use("/api/products", routerProd);
 app.use("/api/carts", routerCart);
+app.use("/api/user", userProd);
 app.use("/products", auth, homeProductsRouter);
 app.use("/carts", auth, cartsRouter);
 app.use("/realtimeproducts", auth, routerRealTimeProducts);

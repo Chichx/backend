@@ -1,9 +1,13 @@
 const CartService = require('../services/cartService');
+const ProductService = require('../services/productService');
+
 const CustomError = require("../services/errors/CustomError")
 const EnumError = require("../services/errors/ErrorEnum")
 const { cartError, cartNotFound, productFields } = require("../services/errors/MessagesError")
 
 const cartService = new CartService();
+const productService = new ProductService();
+
 
 async function addCart(req, res) {
     try {
@@ -54,6 +58,18 @@ async function addProductToCart(req, res) {
     try {
         const cid = req.params.cid;
         const pid = req.params.pid;
+
+        const userId = req.session.user._id;
+        const userRole = req.session.user.role
+
+        const isPremium = userRole.toLowerCase() === 'premium';
+
+        const product = await productService.getProductById(pid);
+        const productOwner = product.owner;
+
+        if (isPremium && productOwner === userId) {
+            return res.status(403).json({ message: 'No esta permitido agregar un producto el cual eres el owner a su carrito.' });
+        }
     
         const result = await cartService.addProductToCart(cid, pid);
     

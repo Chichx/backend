@@ -23,5 +23,6 @@ module.exports = {
     SECRET_KEY_SESSION: process.env.SECRET_KEY_SESSION || 'secret',
     NODEMAILER_EMAIL: process.env.NODEMAILER_EMAIL || 'gastondalla@gmail.com',
     NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD || '',
+    JWT_SECRET: process.env.JWT_SECRET || '',
     environment: environment
 };

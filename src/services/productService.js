@@ -49,7 +49,7 @@ class ProductManager{
           }
     }
 
-    async addProduct({ name, description, price, code, status, stock, category, thumbnail }) {
+    async addProduct({ name, description, price, code, status, stock, category, thumbnail, ownerId }) {
         try {
           if (!(await ProductModel.exists({ code }))) {
             const nuevaId = crypto.randomBytes(16).toString('hex');
@@ -63,6 +63,7 @@ class ProductManager{
               stock,
               category,
               thumbnail,
+              owner: ownerId
             });
     
             await nuevoProducto.save();

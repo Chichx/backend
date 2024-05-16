@@ -31,6 +31,7 @@ const renderProducts = (products) => {
         </h2>
         <div class="w-full h-[1px] bg-gray-500 my-4"></div>
         <p class="font-medium text-base text-zinc-400 text-center mt-2">${product.description}</p>
+        <p class="font-medium text-base text-zinc-400 text-center mt-2">${product.owner}</p>
         <div class="w-full h-[1px] bg-gray-500 my-4"></div>
         <button class="bg-red-500 hover:bg-black/20 transitions-all duration-200 w-full py-2 rounded-xl text-gray-200 font-medium" onclick="deleteProduct('${product._id}')">
           Eliminar
@@ -50,6 +51,7 @@ document.getElementById("newProductForm").addEventListener("submit", (e) => {
     const category = document.getElementById("category").value;
     const stock = document.getElementById("stock").value;
     const thumbnail = document.getElementById("thumbnail").value;
+    const ownerId = document.getElementById("ownerId").value;
 
     const codeDuplicado = productsArray.some((product) => product.code === code);
 
@@ -66,7 +68,7 @@ document.getElementById("newProductForm").addEventListener("submit", (e) => {
             },
           }).showToast();
     } else {
-        const newProduct = { name, description, price, code, stock, category, thumbnail };
+        const newProduct = { name, description, price, code, stock, category, thumbnail, ownerId };
         socket.emit("addProduct", newProduct);
         e.target.reset();
         Toastify({

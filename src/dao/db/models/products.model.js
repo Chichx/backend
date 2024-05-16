@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const mongoosepaginate = require('mongoose-paginate-v2');
+const {esUsuarioPremium} = require("../../../utils/validationPremium")
 
 const ProductSchema = new mongoose.Schema({
     name: { 
@@ -36,6 +37,24 @@ const ProductSchema = new mongoose.Schema({
     thumbnail: {
         type: String,
     },
+    owner: {
+        type: mongoose.Schema.Types.Mixed, 
+        ref: 'User', 
+        default: 'admin', 
+        validate: {
+            validator: async function(value) {
+                try {
+                    if (value === 'admin') return true;
+                    const esPremium = await esUsuarioPremium(value);
+                    return esPremium;
+                } catch (error) {
+                    console.error('Error al validar premium:', error);
+                    return false;
+                }
+            },
+            message: 'El owner debe ser un usuario premium'
+        }
+    }
 });
 
 ProductSchema.plugin(mongoosepaginate);
