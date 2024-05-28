@@ -24,5 +24,9 @@ module.exports = {
     NODEMAILER_EMAIL: process.env.NODEMAILER_EMAIL || 'gastondalla@gmail.com',
     NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD || '',
     JWT_SECRET: process.env.JWT_SECRET || '',
+    GITHUB_CLIENTID: process.env.GITHUB_CLIENTID || '',
+    GITHUB_SECRET: process.env.GITHUB_SECRET || '',
+    SPOTIFY_CLIENTID: process.env.SPOTIFY_CLIENTID || '',
+    SPOTIFY_SECRET: process.env.SPOTIFY_SECRET || '',
     environment: environment
 };

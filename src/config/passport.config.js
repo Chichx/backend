@@ -2,12 +2,13 @@ const passport = require('passport');
 const github = require('passport-github2')
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const UserModel = require('../dao/db/models/users.model')
+const config = require("./config")
 
 const initPassport = () => {
     passport.use('github', new github.Strategy(
         {
-            clientID: "Iv1.15c5ac9e6f92f333",
-            clientSecret: "4b42aebe4032e0d73399d43281069093beceea9e",
+            clientID: config.GITHUB_CLIENTID,
+            clientSecret: config.GITHUB_SECRET,
             callbackURL: "http://localhost:8080/api/sessions/callback"
         },
         async ( accessToken, refreshToken, profile, done)=> {
@@ -38,8 +39,8 @@ const initPassport = () => {
 
     passport.use('spotify', new SpotifyStrategy(
         {
-            clientID: "45259f3a7e8a4aec854271a74e4ed734",
-            clientSecret: "c02b85d2598646df9c9fa8a01892e155",
+            clientID: config.SPOTIFY_CLIENTID,
+            clientSecret: config.SPOTIFY_SECRET,
             callbackURL: "http://localhost:8080/api/sessions/callback/spotify"
         },
         async (accessToken, refreshToken, profile, done) => {

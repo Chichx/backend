@@ -5,6 +5,9 @@ const { Server } = require("socket.io");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
+const swaggerJSDoc  = require("swagger-jsdoc")
+const swaggerExpress  = require("swagger-ui-express")
+
 
 const Database = require("./dao/db/mongo/index");
 const ChatModel = require("./dao/db/models/messages.model");
@@ -32,6 +35,24 @@ const { addLogger } = require("./utils/logger");
 const productService = new ProductService();
 
 const app = express();
+
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Api Docs",
+      info: {
+        title: "Documentacion de api",
+        description: "Toda la informacion detallada de las api estaran aqui"
+      }
+    }
+  },
+  apis: [`./src/docs/**/*.yaml`]
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use("/apidocs", swaggerExpress.serve, swaggerExpress.setup(specs))
 
 app.use(
   session({
@@ -158,3 +179,4 @@ server.listen(config.PORT, () => {
   console.log(`Se inicio con el puerto ${config.PORT}`);
   Database.connect();
 });
+ 

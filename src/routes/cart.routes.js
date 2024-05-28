@@ -2,7 +2,6 @@ const { Router } = require('express');
 const CartManager = require('../services/cartService');
 const {addCart, getCart, addProductToCart, removeProductFromCart, updateCart, updateProductQuantity, removeAllProducts} = require('../controllers/cart.controllers')
 
-
 const cartManager = new CartManager();
 
 const routerCart = Router();
