@@ -9,7 +9,7 @@ const initPassport = () => {
         {
             clientID: config.GITHUB_CLIENTID,
             clientSecret: config.GITHUB_SECRET,
-            callbackURL: "http://localhost:8080/api/sessions/callback"
+            callbackURL: `http://localhost:${config.PORT}/api/sessions/callback`
         },
         async ( accessToken, refreshToken, profile, done)=> {
             try{
@@ -41,7 +41,7 @@ const initPassport = () => {
         {
             clientID: config.SPOTIFY_CLIENTID,
             clientSecret: config.SPOTIFY_SECRET,
-            callbackURL: "http://localhost:8080/api/sessions/callback/spotify"
+            callbackURL: `http://localhost:${config.PORT}/api/sessions/callback/spotify`
         },
         async (accessToken, refreshToken, profile, done) => {
             try {

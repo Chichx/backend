@@ -4,8 +4,8 @@
   "description": "Coder proyecto backend",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js",
+    "test": "mocha --timeout 10000 src/tests/*.test.js"
   },
   "author": "Chicho",
   "license": "ISC",
@@ -30,5 +30,10 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^10.4.0",
+    "supertest": "^7.0.0"
   }
 }
