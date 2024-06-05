@@ -84,10 +84,12 @@ class UserManager {
             return { error: "Usuario no encontrado" };
         }
 
-        user.role = user.role === 'User' ? 'Premium' : 'User';
+        const newRole = user.role === 'User' ? 'Premium' : 'User';
+
+        user.role = newRole;
 
         await user.save();
-        return { message: "Rol editado correctamente" };
+        return { message: `Rol editado correctamente, ahora el usuario es ${newRole}` };
     } catch (error) {
       console.error("Error en toggleUserRole:", error);
       return { error: "Error al cambiar de rol al usuario" };

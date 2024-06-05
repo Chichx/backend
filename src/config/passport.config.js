@@ -27,6 +27,7 @@ const initPassport = () => {
                     user.first_name = name;
                     user.profilePicture = profile._json.avatar_url;
                     user.github = profile;
+                    user.last_connection = new Date();
                     await user.save();
                 }
 
@@ -61,6 +62,7 @@ const initPassport = () => {
                     user.first_name = displayName;
                     user.profilePicture = photos && photos.length > 0 ? photos[0].value : null;
                     user.spotify = profile;
+                    user.last_connection = new Date();
                     await user.save();
                 }
 

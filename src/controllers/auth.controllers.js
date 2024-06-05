@@ -25,6 +25,9 @@ async function Login(req, res) {
 
         return res.status(user.statusCode).json({ error });
       } else {
+        user.last_connection = new Date();
+        await user.save();
+
         req.session.user = user;
         res.status(200).redirect('/products');
       }
@@ -112,17 +115,31 @@ async function ResetPassword(req, res) {
   }
 }
 
-
-
 async function Logout(req, res) {
-    req.session.destroy((err) => {
-        if (err) {
-          req.logger.error(`Error Logout: ${err}`);
-          res.status(500).json({ message: "Error al cerrar sesion" });
-        } else {
-          res.status(200).redirect("/");
-        }
+  const userId = req.session.user._id;
+
+  try {
+      const user = await UserModel.findById(userId);
+
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      user.last_connection = new Date();
+      await user.save();
+
+      req.session.destroy((err) => {
+          if (err) {
+              req.logger.error(`Error Logout: ${err}`);
+              return res.status(500).json({ message: "Error al cerrar sesion" });
+          } else {
+              res.status(200).redirect("/");
+          }
       });
+  } catch (error) {
+      req.logger.error(`Error Logout: ${error}`);
+      res.status(500).json({ message: "Error en el servidor" });
+  }
 }
 
 module.exports = { Login, Register, Logout, RequestPasswordReset, ResetPassword };

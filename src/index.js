@@ -86,7 +86,7 @@ app.use(addLogger);
 //Routes
 app.use("/api/products", routerProd);
 app.use("/api/carts", routerCart);
-app.use("/api/user", userProd);
+app.use("/api/users", userProd);
 app.use("/products", auth, homeProductsRouter);
 app.use("/carts", auth, cartsRouter);
 app.use("/realtimeproducts", auth, routerRealTimeProducts);

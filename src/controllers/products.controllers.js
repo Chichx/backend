@@ -42,7 +42,7 @@ async function getProductById(req, res) {
 async function addProduct(req, res) {
     try {
         if (!req.session.user || !req.session.user._id) {
-            return res.status(401).json({ message: "Debes iniciar sesión para agregar un producto" });
+            return res.status(401).json({ message: "Debes iniciar sesion para agregar un producto" });
         }
 
         const ownerId = req.session.user._id;
@@ -126,7 +126,7 @@ async function deleteProduct(req, res) {
         const { id } = req.params;
 
         if (!req.session.user) {
-            return res.status(401).json({ message: "Debes iniciar sesión para eliminar un producto" });
+            return res.status(401).json({ message: "Debes iniciar sesion para eliminar un producto" });
         }
 
         const userRole = req.session.user.role;
