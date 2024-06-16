@@ -1,5 +1,4 @@
-const express = require('express')
-const {Router} = express
+const { Router } = require('express')
 const { Login, Register, Logout, RequestPasswordReset, ResetPassword } = require('../controllers/auth.controllers')
 const ErrorMiddleware = require('../middleware/errors');
 

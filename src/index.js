@@ -16,6 +16,8 @@ const ProductService = require("./services/productService");
 const routerProd = require("./routes/products.routes");
 const routerCart = require("./routes/cart.routes");
 const userProd = require("./routes/user.routes");
+const adminRouter = require("./routes/admin.routes")
+const adminRouterView = require("./routes/admin.view.routes")
 const homeProductsRouter = require("./routes/homeproducts.routes");
 const routerRealTimeProducts = require("./routes/realTimeProducts.routes");
 const chatRouter = require("./routes/chat.routes");
@@ -87,14 +89,16 @@ app.use(addLogger);
 app.use("/api/products", routerProd);
 app.use("/api/carts", routerCart);
 app.use("/api/users", userProd);
+app.use("/api/admin", adminRouter)
+app.use("/api/sessions", sessionsRouter);
 app.use("/products", auth, homeProductsRouter);
 app.use("/carts", auth, cartsRouter);
 app.use("/realtimeproducts", auth, routerRealTimeProducts);
 app.use("/chat", auth, chatRouter);
 app.use("/", authRouter);
 app.use("/auth/", authApiRouter);
-app.use("/api/sessions", sessionsRouter);
 app.use("/mockingproducts", mockingRouter);
+app.use("/admin/users", auth, adminRouterView)
 app.get('/loggerTest', (req, res, next) => {
   req.logger.fatal('Mensaje fatal');
   req.logger.error('Mensaje de error');

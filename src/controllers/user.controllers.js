@@ -1,5 +1,7 @@
 const UserService = require("../services/userService");
 const UserModel = require("../dao/db/models/users.model")
+const EmailService = require('../services/emailService');
+const emailService = new EmailService();
 const userService = new UserService()
 
 async function toggleUserRole(req, res) {
@@ -95,4 +97,40 @@ async function uploadDocuments(req, res) {
     }
   };
 
-module.exports = {toggleUserRole, uploadDocuments}
+async function getAllUser(req, res){ 
+  try {
+    const users = await UserModel.find({}, 'first_name last_name email role');
+    res.status(200).json(users);
+  } catch (error) {
+    req.logger.error(`Error allGetUsers: ${error}`);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+}
+
+async function deleteInactivityUsers(req, res){
+  try {
+    const tiempoDeInactividad = 2 * 24 * 60 * 60 * 1000;
+    const ahora = new Date();
+    const fechaLimite = new Date(ahora - tiempoDeInactividad);
+
+    const inactivityUsers = await UserModel.find({ last_connection: { $lt: fechaLimite } });
+
+    if (inactivityUsers.length === 0) {
+      return res.status(404).json({ message: 'No hay usuarios inactivos para eliminar.' });
+    }
+
+    let cuentasEliminadas = 0;
+    for (const user of inactivityUsers) {
+        await emailService.sendAccountDeletionEmail(user.email, user.first_name, user.last_name);
+        await UserModel.deleteOne({ _id: user._id });
+        cuentasEliminadas++;
+    }
+
+    res.status(200).json({ message: `Se eliminaron ${cuentasEliminadas} usuarios inactivos correctamente.` });
+  } catch (error) {
+    req.logger.error(`Error deleteInactivityUsers: ${error}`);
+    res.status(500).json({ message: 'Error interno del servidor' });  
+  }
+}
+
+module.exports = {toggleUserRole, uploadDocuments, getAllUser, deleteInactivityUsers}

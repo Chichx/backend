@@ -15,9 +15,13 @@
         <h2 class="text-center text-white font-medium text-5xl">
             Todos nuestros productos!
         </h2>
-
     </div>
-    <div class="my-12 flex justify-center items-center">
+
+    <div class="flex mt-2 justify-center">
+        <button onclick="location.href='/carts/{{user.cart}}'" class="bg-white text-black/90 border border-transparent  font-semibold  px-8 py-1 rounded-full hover:bg-zinc-900 hover:text-gray-300 transitions-all duration-300">Cart</button>
+    </div>
+
+    <div class="my-12 flex justify-center items-center" data-cart-id="{{user.cart}}">
         <div class="flex  grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-3">
             {{#each products}}
             <div class="bg-[#232323] w-96 rounded-xl p-6">
@@ -36,12 +40,48 @@
                 </p>
                 <div class="w-full h-[1px] bg-gray-500 my-4"></div>
 
-                <button
-                    class="bg-[#2d2d2d] hover:bg-black/20 transitions-all duration-200 w-full py-2 rounded-xl text-gray-200 font-medium">
-                    Comprar
-                </button>
+            <button class="bg-[#2d2d2d] hover:bg-black/20 transitions-all duration-200 w-full py-2 rounded-xl text-gray-200 font-medium buy-btn"
+                    data-product-id="{{this._id}}" data-cart-id="{{this.userCart}}">
+                Comprar
+            </button>
             </div>
             {{/each}}
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const buyButtons = document.querySelectorAll('.buy-btn');
+        buyButtons.forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const productId = button.dataset.productId;
+                const cartId = button.dataset.cartId; 
+
+                try {
+                    const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const result = await response.json();
+                    Toastify({
+                    text: result.message,
+                    className: result.success ? "success" : "error",
+                    newWindow: true,
+                    style: {
+                        background: result.success ? "rgba(43, 69, 186, 0.2)" : "rgba(255, 0, 0, 0.2)",
+                        border: result.success ? "1px solid #2b45ba" : "1px solid #C52222",
+                        borderRadius: "10px",
+                        fontSize: "12px",
+                    },
+                }).showToast();
+                } catch (error) {
+                    console.error('Error al agregar producto al carrito:', error);
+                }
+            });
+        });
+    });
+</script>
+

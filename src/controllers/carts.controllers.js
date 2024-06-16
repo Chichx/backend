@@ -20,6 +20,7 @@ async function getCart(req, res) {
         if (cart.success) {
           res.status(200).render("carts", {
             cartProduct: cartProducts,
+            userCart: req.session.user.cart
           });
         } else {
           res.status(404).json({ message: 'Carrito no encontrado' });

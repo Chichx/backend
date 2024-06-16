@@ -1,6 +1,5 @@
-const express = require('express')
+const { Router } = require('express')
 const passport = require('passport')
-const { Router } = express
 
 const router = Router()
 

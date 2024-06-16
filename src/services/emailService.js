@@ -263,6 +263,108 @@ class EmailService {
             throw error;
         }
     }
+
+    async sendAccountDeletionEmail(email, firstName, lastName) {
+      try {
+          const mailOptions = {
+              from: config.NODEMAILER_EMAIL,
+              to: email,
+              subject: 'Account deleted by inactivity',
+              html: `<!DOCTYPE html>
+              <html>
+              <head>
+                <meta charset="utf-8">
+                <meta http-equiv="x-ua-compatible" content="ie=edge">
+                <title>Cuenta eliminada</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+              </head>
+              <body style="background-color: #e9ecef;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td align="center" bgcolor="#e9ecef">
+                      <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                        <tr>
+                          <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
+                            <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Cuenta Eliminada</h1>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" bgcolor="#e9ecef">
+                      <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                        <tr>
+                          <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                            <p style="margin: 0;">Hello ${firstName} ${lastName},</p>
+                            <p style="margin: 0;">Your account has been deleted, reason: Inactivity.</p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </body>
+              </html>`
+          };
+
+          await this.transporter.sendMail(mailOptions);
+      } catch (error) {
+          console.error(`Error sending account deletion email: ${error}`);
+          throw error;
+      }
+  }
+
+  async sendAccountDeletionEmailByAdmin(email, firstName, lastName) {
+    try {
+        const mailOptions = {
+            from: config.NODEMAILER_EMAIL,
+            to: email,
+            subject: 'Account deleted by admin',
+            html: `<!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8">
+              <meta http-equiv="x-ua-compatible" content="ie=edge">
+              <title>Cuenta eliminada</title>
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body style="background-color: #e9ecef;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td align="center" bgcolor="#e9ecef">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                        <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
+                          <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Cuenta Eliminada</h1>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" bgcolor="#e9ecef">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                        <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                          <p style="margin: 0;">Hello ${firstName} ${lastName},</p>
+                          <p style="margin: 0;">Your account has been deleted, reason: By Admin.</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </body>
+            </html>`
+        };
+
+        await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+        console.error(`Error sending account deletion email BY ADMIN: ${error}`);
+        throw error;
+    }
+}
 }
 
 module.exports = EmailService;

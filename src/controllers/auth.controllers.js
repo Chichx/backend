@@ -4,8 +4,9 @@ const CustomError = require("../services/errors/CustomError")
 const EnumError = require("../services/errors/ErrorEnum")
 const { generateUserErrorMessage, userLoginError, existingUser } = require("../services/errors/MessagesError")
 const UserModel = require("../dao/db/models/users.model")
+const CartModel = require("../dao/db/models/carts.model")
 const { generatePasswordResetToken, validatePasswordResetToken } = require("../utils/passwordReset");
-const EmailService = require('../services/passwordEmailResetService');
+const EmailService = require('../services/emailService');
 const emailService = new EmailService();
 
 
@@ -26,6 +27,12 @@ async function Login(req, res) {
         return res.status(user.statusCode).json({ error });
       } else {
         user.last_connection = new Date();
+
+        if (!user.cart) {
+          const cart = await CartModel.create({ products: [] });
+          user.cart = cart._id;
+        }
+
         await user.save();
 
         req.session.user = user;

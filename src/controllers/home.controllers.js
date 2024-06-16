@@ -8,7 +8,7 @@ async function HomeView(req, res) {
 
         const products = await productService.getProducts({ limit, page, sort, query });
 
-        const productsFinales = products.payload.map(product => ({ ...product.toObject() }));
+        const productsFinales = products.payload.map(product => ({ ...product.toObject(), userCart: req.session.user.cart}));
 
         const userData = {
             first_name: req.session.user.first_name,
@@ -16,6 +16,7 @@ async function HomeView(req, res) {
             age: req.session.user.age,
             email: req.session.user.email,
             role: req.session.user.role,
+            cart: req.session.user.cart
         };
     
         res.status(200).render("products", {

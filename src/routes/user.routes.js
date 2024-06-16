@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const upload = require('../middleware/multer')
-const {toggleUserRole, uploadDocuments} = require('../controllers/user.controllers')
+const {toggleUserRole, uploadDocuments, getAllUser, deleteInactivityUsers} = require('../controllers/user.controllers')
 
 const router = Router()
 
@@ -10,5 +10,7 @@ router.post('/:uid/documents', upload.fields([
     { name: 'product', maxCount: 1 },
     { name: 'documents', maxCount: 10 }
   ]), uploadDocuments);
+router.get('/', getAllUser);
+router.delete('/', deleteInactivityUsers)
 
 module.exports = router

@@ -66,7 +66,7 @@ class CartManager {
   
       await cart.save();
 
-      return { success: true, cart };
+      return { success: true, message: 'El producto se agrego correctamente al carrito' };
     } catch (error) {
       throw error;
     }

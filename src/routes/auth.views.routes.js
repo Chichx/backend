@@ -1,5 +1,4 @@
-const express = require('express')
-const {Router} = express
+const { Router } = require('express')
 const { LoginView, RegisterView, Profile, RequestResetPassword, ResetPassword } = require('../controllers/auth.views.controllers')
 
 
