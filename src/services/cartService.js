@@ -72,19 +72,33 @@ class CartManager {
     }
   }
 
-  async removeProductFromCart(cartId, productId) {
+  async removeProductFromCart(cartId, productId, removeAll = false) {
     try {
-      const result = await CartModel.updateOne(
-        { _id: cartId, 'products._id': productId }, 
-        { $pull: { products: { _id: productId } } }
-    );
+        const cart = await CartModel.findOne({ _id: cartId });
+        if (!cart) {
+            return { success: false, message: `No se encontro el carrito con id ${cartId}.` };
+        }
 
-    if (result.matchedCount === 0) {
-      return { success: false, message: `No se encontró el producto con id ${productId} en el carrito.` };
-    }  else {
-      return { success: true, message: `El producto con id ${productId} se removio correctamente.`, data: result };
-    }
+        const product = cart.products.find(p => p.product.toString() === productId);
+        if (!product) {
+            return { success: false, message: `No se encontro el producto con id ${productId} en el carrito.` };
+        }
 
+        if (removeAll || product.quantity === 1) {
+            const result = await CartModel.updateOne(
+                { _id: cartId },
+                { $pull: { products: { product: productId } } }
+            );
+            if (result.nModified === 0) {
+                return { success: false, message: `No se encontro el producto con id ${productId} en el carrito.` };
+            } else {
+                return { success: true, message: `El producto con id ${productId} se elimino completamente.`, data: result };
+            }
+        } else {
+            product.quantity -= 1;
+            await cart.save();
+            return { success: true, message: `Se borro 1 cantidad de producto con id ${productId}.`, data: cart };
+        }
     } catch (error) {
         throw error;
     }

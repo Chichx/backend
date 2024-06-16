@@ -1,0 +1,39 @@
+    <div class="mt-24 relative">
+        <div class="absolute top-96 right-0 w-48 h-48 blur-[180px] bg-gradient-to-r from-blue-300 to-blue-500 rounded-3xl z-[-1]"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 blur-[200px] bg-gradient-to-r from-blue-300 to-blue-500 rounded-3xl z-[-1]"></div>
+        <div class="flex flex-col lg:flex-row space-x-0 m-16 lg:space-x-4 space-y-4 lg:space-y-0 justify-center">
+            <div class="flex flex-col bg-[#232323] p-6 overflow-y-auto  rounded-xl justify-center items-center">
+                <h1 class="text-white text-3xl font-bold mb-4">Gracias por confiar en nosotros!</h1>
+                <div class="flex flex-col gap-3">
+                    <div class="flex flex-col w-full">
+                        <div class="w-full flex items-center">
+                            <div class="h-24 w-24 rounded-full bg-green-500/20 flex items-center justify-center">
+                                <div class="h-14 w-14 rounded-full bg-green-500 flex items-center justify-center">
+                                    <span class="text-4xl font-bold text-green-700">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1 ml-3">
+                                <p class="px-4 py-1 rounded-xl text-zinc-400 text-xs bg-[#212121] font-medium">
+                                    Tu ID de compra es <span class="text-orange-400 font-bold">{{ticket.id}}</span>
+                                </p>
+                                <p class="px-4 py-1 rounded-xl text-zinc-400 text-xs bg-[#212121] font-medium">
+                                    Compraste un total de: <span class="text-green-400 font-bold">{{ticket.totalItems}}</span> productos
+                                </p>
+                                <p class="px-4 py-1 rounded-xl text-zinc-400 text-xs bg-[#212121] font-medium">
+                                    Gastaste un total de: <span class="text-green-400 font-bold">{{ticket.amount}}</span> USD
+                                </p>
+                                <p class="px-4 py-1 rounded-xl text-zinc-400 text-xs bg-[#212121] font-medium">
+                                    Comprador: <span class="text-green-400 font-bold">{{ticket.first_name}} {{ticket.last_name}}</span>
+                                </p>
+                                <p class="px-4 py-1 rounded-xl text-zinc-400 text-xs bg-[#212121] font-medium">
+                                    Email: <span class="text-green-400 font-bold">{{ticket.purchaser}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

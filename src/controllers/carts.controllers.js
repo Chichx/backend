@@ -15,6 +15,7 @@ async function getCart(req, res) {
         const cartProducts = cart.cart.map(cartProduct => ({
             product: cartProduct.product.toObject(),
             quantity: cartProduct.quantity,
+            cart: req.session.user.cart
           }));
     
         if (cart.success) {
@@ -41,6 +42,11 @@ async function PurchaseCart(req, res) {
         }
 
         const products = cart.cart;
+
+        if (products.length === 0) {
+            return res.status(400).json({ message: 'El carrito esta vacio.' });
+        }
+        
         const productsOutOfStock = [];
 
         for (const cartProduct of products) {
@@ -68,7 +74,16 @@ async function PurchaseCart(req, res) {
 
         await cartService.removeAllProducts(cid);
 
-        res.status(200).json({ message: 'Compra realizada exitosamente', ticket });
+        res.render('gracias', {
+            ticket: {
+                id: ticket._id,
+                amount: ticket.amount,
+                totalItems: cart.cart.length,
+                first_name: ticketData.first_name,
+                last_name: ticketData.last_name,
+                purchaser: ticketData.purchaser
+            }
+        });
     } catch (error) {
         req.logger.error(`Error PurchaseCart: ${error}`);
 

@@ -84,8 +84,9 @@ async function removeProductFromCart(req, res) {
     try {
         const cid = req.params.cid;
         const pid = req.params.pid;
+        const removeAll = req.query.removeAll === 'true';
   
-        const result = await cartService.removeProductFromCart(cid, pid);
+        const result = await cartService.removeProductFromCart(cid, pid, removeAll);
   
         if (result.success) {
             res.status(200).send(result);
