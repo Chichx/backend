@@ -3,7 +3,7 @@ paths:
     post:
       summary: Registrar un usuario en la plataforma
       tags: 
-        - Users
+        - Auth
       requestBody:
         required: true
         content:
@@ -26,7 +26,7 @@ paths:
     post:
       summary: Iniciar sesión en la plataforma
       tags: 
-        - Users
+        - Auth
       requestBody:
         required: true
         content:
@@ -47,42 +47,39 @@ paths:
 
   /api/products:
     get:
-      summary: Obtener una lista de productos
+      summary: Obtener todos los productos
       tags:
         - Products
-      parameters:
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-          description: Límite de productos por página
-        - in: query
-          name: page
-          schema:
-            type: integer
-            default: 1
-          description: Número de página
-        - in: query
-          name: sort
-          schema:
-            type: string
-            enum: [asc, desc]
-            description: Orden de los productos por precio
-        - in: query
-          name: query
-          schema:
-            type: string
-            description: Filtro de productos por categoría o disponibilidad
       responses:
         "200":
           description: Lista de productos obtenida exitosamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductsResponse'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
         "500":
-          description: Error inesperado en el servidor, no se pudo manejar el proceso
+          description: Error inesperado en el servidor
+    post:
+      summary: Agregar un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        "201":
+          description: Producto creado exitosamente
+        "400":
+          description: Error en la solicitud del producto
+        "401":
+          description: No autorizado, debe iniciar sesión
+        "500":
+          description: Error inesperado en el servidor
 
   /api/products/{id}:
     get:
@@ -105,6 +102,65 @@ paths:
                 $ref: '#/components/schemas/Product'
         "404":
           description: Producto no encontrado
+        "500":
+          description: Error inesperado en el servidor
+    put:
+      summary: Actualizar un producto por ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        "200":
+          description: Producto actualizado exitosamente
+        "400":
+          description: Error en la solicitud del producto
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error inesperado en el servidor
+    delete:
+      summary: Eliminar un producto por ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      responses:
+        "200":
+          description: Producto eliminado exitosamente
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error inesperado en el servidor
+
+  /api/carts:
+    post:
+      summary: Crear un nuevo carrito
+      tags:
+        - Carts
+      responses:
+        "201":
+          description: Carrito creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
         "500":
           description: Error inesperado en el servidor
 
@@ -131,7 +187,301 @@ paths:
           description: Carrito no encontrado
         "500":
           description: Error inesperado en el servidor
-        
+    put:
+      summary: Actualizar un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductInCart'
+      responses:
+        "200":
+          description: Carrito actualizado exitosamente
+        "400":
+          description: Error en la solicitud de actualización del carrito
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error inesperado en el servidor
+    delete:
+      summary: Eliminar todos los productos de un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        "200":
+          description: Todos los productos eliminados exitosamente del carrito
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error inesperado en el servidor
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agregar un producto a un carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      responses:
+        "200":
+          description: Producto agregado exitosamente al carrito
+        "403":
+          description: No permitido agregar un producto propio al carrito
+        "500":
+          description: Error inesperado en el servidor
+    delete:
+      summary: Eliminar un producto de un carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+        - in: query
+          name: removeAll
+          required: false
+          schema:
+            type: boolean
+          description: Indica si se deben eliminar todas las unidades del producto
+      responses:
+        "200":
+          description: Producto eliminado exitosamente del carrito
+        "404":
+          description: Producto no encontrado en el carrito
+        "500":
+          description: Error inesperado en el servidor
+
+  /api/carts/{cid}/product/{pid}/quantity:
+    put:
+      summary: Actualizar la cantidad de un producto en un carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  description: Nueva cantidad del producto en el carrito
+      responses:
+        "200":
+          description: Cantidad del producto actualizada exitosamente
+        "404":
+          description: Producto no encontrado en el carrito
+        "500":
+          description: Error inesperado en el servidor
+
+  /api/users/premium/{uid}:
+    put:
+      summary: Cambiar el rol de un usuario
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+          description: ID del usuario
+      responses:
+        "200":
+          description: Rol del usuario cambiado exitosamente
+        "400":
+          description: El usuario no ha cargado su documentación
+        "401":
+          description: No autorizado, debe iniciar sesión
+        "403":
+          description: No tienes permiso para editar los roles de los usuarios
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error inesperado en el servidor
+
+  /api/users/{uid}/documents:
+    post:
+      summary: Subir documentos para un usuario
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+          description: ID del usuario
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profile:
+                  type: string
+                  format: binary
+                  description: Documento de perfil
+                product:
+                  type: string
+                  format: binary
+                  description: Documento de producto
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Otros documentos
+      responses:
+        "200":
+          description: Documentos subidos correctamente
+        "400":
+          description: No se subieron archivos o solicitud incorrecta
+        "401":
+          description: No autorizado, debe iniciar sesión
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error inesperado en el servidor
+
+  /api/users:
+    get:
+      summary: Obtener todos los usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Lista de usuarios obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Error inesperado en el servidor
+    delete:
+      summary: Eliminar usuarios inactivos
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Usuarios inactivos eliminados exitosamente
+        "404":
+          description: No hay usuarios inactivos para eliminar
+        "500":
+          description: Error inesperado en el servidor
+
+  /api/users/{id}/role:
+    post:
+      summary: Actualizar rol de usuario
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: Nuevo rol del usuario
+      responses:
+        "200":
+          description: Rol del usuario actualizado correctamente
+        "401":
+          description: Acceso no autorizado
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor
+
+  /api/users/{id}/delete:
+    post:
+      summary: Eliminar usuario
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del usuario
+      responses:
+        "200":
+          description: Usuario eliminado correctamente
+        "401":
+          description: Acceso no autorizado
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor
+
 components:
   schemas:
     Register: 
@@ -189,6 +539,76 @@ components:
         - email
         - password
 
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del producto
+        name:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código del producto
+        status:
+          type: boolean
+          description: Estado del producto (disponible o no)
+        stock:
+          type: integer
+          description: Cantidad de stock del producto
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnail:
+          type: string
+          description: URL de la imagen del producto
+        ownerId:
+          type: string
+          description: ID del propietario del producto
+
+    ProductInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código del producto
+        status:
+          type: boolean
+          description: Estado del producto (disponible o no)
+        stock:
+          type: integer
+          description: Cantidad de stock del producto
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnail:
+          type: string
+          description: URL de la imagen del producto
+      required:
+        - name
+        - description
+        - price
+        - code
+        - status
+        - stock
+        - category
+
     ProductsResponse:
       type: object
       properties:
@@ -217,63 +637,69 @@ components:
           type: string
           nullable: true
 
-    Product:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        price:
-          type: number
-        code:
-          type: string
-        status:
-          type: boolean
-        stock:
-          type: number
-        category:
-          type: string
-        thumbnail:
-          type: string
-        owner:
-          type: string
-      example:
-        _id: "60c72b2f9b1e8b3a1c8d4e5e"
-        name: "Producto de prueba"
-        description: "Descripción del producto de prueba"
-        price: 99.99
-        code: "PRD001"
-        status: true
-        stock: 5
-        category: "Category 1"
-        thumbnail: "http://imagen.com/thumbnail.jpg"
-        owner: "admin"
-
     Cart:
       type: object
       properties:
-        _id:
+        id:
           type: string
+          description: ID del carrito
         products:
           type: array
           items:
-            $ref: '#/components/schemas/Product'
-        total:
-          type: number
-      example:
-        _id: "60c72b2f9b1e8b3a1c8d4e5e"
-        products:
-          - _id: "60c72b2f9b1e8b3a1c8d4e5e"
-            name: "Producto de prueba"
-            description: "Descripción del producto de prueba"
-            price: 99.99
-            code: "PROD12345"
-            status: true
-            stock: 10
-            category: "Category 1"
-            thumbnail: "http://imagen.com/imagen.jpg"
-            owner: "admin"
-        total: 199.98
+            $ref: '#/components/schemas/ProductInCart'
+    ProductInCart:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: ID del producto
+        quantity:
+          type: integer
+          description: Cantidad del producto en el carrito
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del usuario
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Correo electrónico del usuario
+        role:
+          type: string
+          description: Rol del usuario
+    Document:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre del documento
+        reference:
+          type: string
+          description: Ruta del documento
+
+    Admin:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del usuario
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Correo electrónico del usuario
+        role:
+          type: string
+          description: Rol del usuario

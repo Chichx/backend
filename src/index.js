@@ -44,8 +44,8 @@ const swaggerOptions = {
     info: {
       title: "Api Docs",
       info: {
-        title: "Documentacion de api",
-        description: "Toda la informacion detallada de las api estaran aqui"
+        title: "Documentacion de todos los endpoints",
+        description: "Toda la informacion detallada de las api estan aqui"
       }
     }
   },
@@ -53,7 +53,7 @@ const swaggerOptions = {
 }
 
 const specs = swaggerJSDoc(swaggerOptions)
-app.use("/apidocs", swaggerExpress.serve, swaggerExpress.setup(specs))
+app.use("/api/docs", swaggerExpress.serve, swaggerExpress.setup(specs))
 
 app.use(
   session({
