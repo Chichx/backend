@@ -52,7 +52,7 @@ async function addProduct(req, res) {
         if (!name || !description || !price || !code || !status || !stock || !category) {
             const error = CustomError.createError({
                 name: "Product error",
-                cause: productFields({name, description ,price, code, status, stock, category}),
+                cause: productFields({name, description, price, code, status, stock, category}),
                 message: "Faltan datos por completar",
                 code: EnumError.DATABASE_ERROR
               });
